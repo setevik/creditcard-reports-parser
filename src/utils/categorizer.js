@@ -8,7 +8,7 @@ export const CATEGORIES = [
 ];
 
 const KEYWORDS = {
-    "Food": ["wolt", "10bis", "mcdonalds", "mqdvnlds", "aroma", "rvmh", "cafe", "coffee", "restaurant", "pizza", "burger", "sushi", "falafel", "shawarma", "mph", "mkvnvt vtvmtyvt", "rvldyn", "qpyt", "gvrmh"],
+    "Food": ["wolt", "10bis", "mcdonalds", "mqdvnlds", "aroma", "rvmh", "cafe", "coffee", "restaurant", "pizza", "burger", "sushi", "falafel", "shawarma", "mph", "mkvnvt vtvmtyvt", "rvldyn", "qpyt", "gvrmh", "bvlnzry 96", "qph", "ypn 73", "bvqdv"],
     "Supermarket": ["shufersal", "shvprsl", "mega", "rami levy", "rmy lvy", "victory", "tiv taam", "super", "market", "makolet", "am:pm", "pvlytsr"],
     "Pharm": ["super-pharm", "svpr prm", "be", "pharmacy", "drugstore"],
     "Transport": ["gett", "uber", "yango", "moovit", "pango", "cello", "fuel", "gas", "dor alon", "paz", "sonol", "delek", "train", "bus", "rail", "parking", "rb qv"],
