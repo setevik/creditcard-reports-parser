@@ -3,6 +3,7 @@ import { FileUploader } from './components/FileUploader';
 import { ResultsTable } from './components/ResultsTable';
 import { SanityCheck } from './components/SanityCheck';
 import { parseExcelFile } from './utils/parser';
+import { aggregateTransactions } from './utils/aggregator';
 import { Wallet } from 'lucide-react';
 
 function App() {
@@ -26,40 +27,13 @@ function App() {
         try {
             let allExpenses = [];
 
-            for (const fileObj of files) {
-                const expenses = await parseExcelFile(fileObj.file, fileObj.alias || 'Unknown Card');
+            for (let i = 0; i < files.length; i++) {
+                const fileObj = files[i];
+                const expenses = await parseExcelFile(fileObj.file, fileObj.alias || `Card #${i + 1}`);
                 allExpenses = [...allExpenses, ...expenses];
             }
 
-            // Aggregate by Vendor
-            const aggregated = allExpenses.reduce((acc, curr) => {
-                // Group by Vendor, Currency, Card, and Billing Date
-                // We exclude Category from the key so that different categories for the same vendor are merged
-                const key = `${curr.vendor}|${curr.currency}|${curr.cardAlias}|${curr.billingDate}`;
-                if (!acc[key]) {
-                    acc[key] = {
-                        vendor: curr.vendor,
-                        amount: 0,
-                        currency: curr.currency,
-                        date: curr.billingDate, // Use billing date for the report
-                        cardAlias: curr.cardAlias,
-                        category: curr.category, // Take the category of the first transaction
-                        transactions: [] // Store individual transactions
-                    };
-                }
-                acc[key].amount += curr.amount;
-                acc[key].transactions.push(curr);
-                return acc;
-            }, {});
-
-            const aggregatedList = Object.values(aggregated);
-
-            // Sort by Card Alias then Vendor Name
-            aggregatedList.sort((a, b) => {
-                const cardCompare = a.cardAlias.localeCompare(b.cardAlias);
-                if (cardCompare !== 0) return cardCompare;
-                return a.vendor.localeCompare(b.vendor);
-            });
+            const aggregatedList = aggregateTransactions(allExpenses);
 
             setProcessedData(aggregatedList);
         } catch (err) {
