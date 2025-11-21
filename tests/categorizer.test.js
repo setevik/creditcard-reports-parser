@@ -40,6 +40,14 @@ describe('Categorizer Logic', () => {
         expect(categorizeExpense('גורמה')).toBe('Food');
         // "ארומה" -> "rvmh" -> Food
         expect(categorizeExpense('ארומה')).toBe('Food');
+        // "בולנזרי 96" -> "bvlnzry 96" -> Food
+        expect(categorizeExpense('בולנזרי 96')).toBe('Food');
+        // "קפה ג'ו" -> "qph g'v" -> Food
+        expect(categorizeExpense('קפה ג\'ו')).toBe('Food');
+        // "יפן 73 עזריאלי ת"א" -> "ypn 73 `zryly t"" -> Food
+        expect(categorizeExpense('יפן 73 עזריאלי ת"א')).toBe('Food');
+        // "בוקאדו" -> "bvqdv" -> Food
+        expect(categorizeExpense('בוקאדו')).toBe('Food');
     });
 
     it('should categorize new categories and priority', () => {

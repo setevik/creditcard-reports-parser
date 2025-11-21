@@ -3,7 +3,7 @@ export function aggregateTransactions(transactions) {
     const aggregated = transactions.reduce((acc, curr) => {
         // Group by Vendor, Currency, Card, and Billing Date
         // We exclude Category from the key so that different categories for the same vendor are merged
-        const key = `${curr.vendor}|${curr.currency}|${curr.cardAlias}|${curr.billingDate}`;
+        const key = `${curr.vendor.toLowerCase()}|${curr.currency}|${curr.cardAlias}|${curr.billingDate}`;
         if (!acc[key]) {
             acc[key] = {
                 vendor: curr.vendor,
