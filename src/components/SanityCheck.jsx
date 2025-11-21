@@ -15,38 +15,40 @@ export function SanityCheck({ data }) {
     }, {});
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
-            <div className="flex items-center gap-2 text-gray-800 mb-2">
-                <Calculator className="h-5 w-5" />
-                <h3 className="text-lg font-semibold">Sanity Check</h3>
+        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm ring-1 ring-slate-900/5 space-y-6">
+            <div className="flex items-center gap-3 text-slate-900 mb-2">
+                <div className="p-2 bg-indigo-50 rounded-lg">
+                    <Calculator className="h-6 w-6 text-indigo-600" />
+                </div>
+                <h3 className="text-xl font-semibold">Sanity Check</h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-gray-50 p-4 rounded-md">
-                    <p className="text-sm text-gray-500">Total Transactions</p>
-                    <p className="text-2xl font-bold text-gray-900">{totalTransactions}</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Total Transactions</p>
+                    <p className="text-3xl font-bold text-slate-900 mt-2">{totalTransactions}</p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-md">
-                    <p className="text-sm text-gray-500">Unique Vendors</p>
-                    <p className="text-2xl font-bold text-gray-900">{uniqueVendors}</p>
+                <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Unique Vendors</p>
+                    <p className="text-3xl font-bold text-slate-900 mt-2">{uniqueVendors}</p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-md">
-                    <p className="text-sm text-gray-500">Total Sum</p>
-                    <div className="space-y-1">
+                <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Total Sum</p>
+                    <div className="space-y-1 mt-2">
                         {Object.entries(sumsByCurrency).map(([curr, sum]) => (
-                            <p key={curr} className="text-xl font-bold text-gray-900">
-                                {sum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {curr}
+                            <p key={curr} className="text-2xl font-bold text-slate-900">
+                                {sum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-lg text-slate-500">{curr}</span>
                             </p>
                         ))}
                     </div>
                 </div>
             </div>
 
-            <div className="flex items-start gap-3 p-4 bg-blue-50 text-blue-800 rounded-md text-sm">
-                <CheckCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-4 p-4 bg-blue-50 text-blue-900 rounded-xl text-sm border border-blue-100">
+                <CheckCircle className="h-5 w-5 flex-shrink-0 mt-0.5 text-blue-600" />
                 <div>
-                    <p className="font-medium">Verification Tip</p>
-                    <p className="mt-1 text-blue-700">
+                    <p className="font-semibold text-blue-800">Verification Tip</p>
+                    <p className="mt-1 text-blue-700 leading-relaxed">
                         Compare the "Total Sum" above with the total amount shown in your original bank report PDF/Excel summary line to ensure all transactions were captured correctly.
                     </p>
                 </div>

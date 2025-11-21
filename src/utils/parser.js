@@ -20,10 +20,25 @@ export async function parseExcelFile(file, cardAlias) {
                     // Identify format and header row
                     let headerRowIndex = -1;
                     let format = 'unknown';
+                    let billingDate = '';
 
                     for (let i = 0; i < Math.min(jsonData.length, 20); i++) {
                         const row = jsonData[i];
                         const rowStr = row.join(' ').toLowerCase();
+
+                        // Try to extract billing date
+                        // Example: "עסקאות לחיוב ב-10/11/2025"
+                        if (rowStr.includes('חיוב ב-')) {
+                            const match = rowStr.match(/(\d{1,2}[./-]\d{1,2}[./-]\d{2,4})/);
+                            if (match) {
+                                billingDate = match[1].replace(/\//g, '.');
+                                // Normalize to DD.MM.YYYY
+                                const parts = billingDate.split('.');
+                                if (parts.length === 3) {
+                                    billingDate = `${parts[0].padStart(2, '0')}.${parts[1].padStart(2, '0')}.${parts[2]}`;
+                                }
+                            }
+                        }
 
                         if (rowStr.includes('תאריך') && (rowStr.includes('עסקה') || rowStr.includes('חיוב'))) {
                             headerRowIndex = i;
@@ -67,13 +82,21 @@ export async function parseExcelFile(file, cardAlias) {
 
                         if (!rawDate || !amount) return;
 
-                        // Parse date (Excel serial date or string)
+                        // Parse transaction date (for reference, though we use billing date for grouping)
                         let dateStr = '';
                         if (typeof rawDate === 'number') {
                             const date = XLSX.SSF.parse_date_code(rawDate);
-                            dateStr = `${date.d}/${date.m}/${date.y}`;
+                            const day = date.d.toString().padStart(2, '0');
+                            const month = date.m.toString().padStart(2, '0');
+                            dateStr = `${day}.${month}.${date.y}`;
                         } else {
-                            dateStr = rawDate.toString().trim();
+                            // Try to parse string date if possible, otherwise keep as is but replace / with .
+                            dateStr = rawDate.toString().trim().replace(/\//g, '.');
+                            // Ensure zero padding if it looks like a date
+                            const parts = dateStr.split('.');
+                            if (parts.length === 3) {
+                                dateStr = `${parts[0].padStart(2, '0')}.${parts[1].padStart(2, '0')}.${parts[2]}`;
+                            }
                         }
 
                         // Clean amount
@@ -90,7 +113,8 @@ export async function parseExcelFile(file, cardAlias) {
                             vendor: vendor || 'Unknown',
                             amount: cleanAmount,
                             currency: currency || '₪',
-                            date: dateStr,
+                            transactionDate: dateStr,
+                            billingDate: billingDate || dateStr, // Fallback to transaction date if billing date not found
                             cardAlias: cardAlias,
                             category: category,
                             originalRow: row
