@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, List, X } from 'lucide-react';
 
 export function ResultsTable({ data }) {
     const [copied, setCopied] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
 
     const handleCopy = () => {
         const header = "Vendor\tAmount\tCurrency\tDate\tCard\tCategory";
         const rows = data.map(row =>
-            `${row.vendor}\t${row.amount}\t${row.currency}\t${row.date}\t${row.cardAlias}\t${row.category}`
+            `${row.vendor} \t${row.amount} \t${row.currency} \t${row.date} \t${row.cardAlias} \t${row.category} `
         ).join('\n');
 
-        navigator.clipboard.writeText(`${header}\n${rows}`);
+        navigator.clipboard.writeText(`${header} \n${rows} `);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -18,7 +19,7 @@ export function ResultsTable({ data }) {
     if (!data || data.length === 0) return null;
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 relative">
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold text-slate-900">Processed Expenses ({data.length})</h2>
                 <button
@@ -40,6 +41,7 @@ export function ResultsTable({ data }) {
                             <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date</th>
                             <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Card</th>
                             <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Category</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Details</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
@@ -51,20 +53,72 @@ export function ResultsTable({ data }) {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{row.date}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{row.cardAlias}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    <span className={`inline - flex items - center px - 2.5 py - 0.5 rounded - full text - xs font - medium
                     ${row.category === 'Food' ? 'bg-orange-100 text-orange-800' :
                                             row.category === 'Transport' ? 'bg-blue-100 text-blue-800' :
                                                 row.category === 'Shopping' ? 'bg-pink-100 text-pink-800' :
                                                     row.category === 'Utilities' ? 'bg-purple-100 text-purple-800' :
-                                                        'bg-slate-100 text-slate-800'}`}>
+                                                        'bg-slate-100 text-slate-800'
+                                        } `}>
                                         {row.category}
                                     </span>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                    <button
+                                        onClick={() => setSelectedRow(row)}
+                                        className="p-1.5 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-indigo-600"
+                                        title="View Details"
+                                    >
+                                        <List className="h-5 w-5" />
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {selectedRow && (
+                <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setSelectedRow(null)}>
+                    <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
+                        <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900">{selectedRow.vendor}</h3>
+                                <p className="text-sm text-slate-500 mt-1">
+                                    {selectedRow.cardAlias} • {selectedRow.date} • Total: {selectedRow.amount.toFixed(2)} {selectedRow.currency}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setSelectedRow(null)}
+                                className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-600"
+                            >
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
+
+                        <div className="overflow-y-auto p-6">
+                            <table className="min-w-full divide-y divide-slate-100">
+                                <thead>
+                                    <tr>
+                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Date</th>
+                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Amount</th>
+                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Original Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                    {selectedRow.transactions && selectedRow.transactions.map((tx, i) => (
+                                        <tr key={i} className="hover:bg-slate-50">
+                                            <td className="px-4 py-3 text-sm text-slate-600">{tx.transactionDate}</td>
+                                            <td className="px-4 py-3 text-sm text-slate-900 font-mono">{tx.amount.toFixed(2)} {tx.currency}</td>
+                                            <td className="px-4 py-3 text-sm text-slate-500">{tx.vendor}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
