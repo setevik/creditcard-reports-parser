@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FileUploader } from './components/FileUploader';
 import { ResultsTable } from './components/ResultsTable';
 import { SanityCheck } from './components/SanityCheck';
@@ -10,6 +10,13 @@ function App() {
     const [processedData, setProcessedData] = useState([]);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState(null);
+    const resultsRef = useRef(null);
+
+    useEffect(() => {
+        if (processedData.length > 0 && resultsRef.current) {
+            resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [processedData]);
 
     const handleProcess = async () => {
         setIsProcessing(true);
@@ -26,7 +33,9 @@ function App() {
 
             // Aggregate by Vendor
             const aggregated = allExpenses.reduce((acc, curr) => {
-                const key = `${curr.vendor}|${curr.currency}|${curr.cardAlias}|${curr.billingDate}|${curr.category}`;
+                // Group by Vendor, Currency, Card, and Billing Date
+                // We exclude Category from the key so that different categories for the same vendor are merged
+                const key = `${curr.vendor}|${curr.currency}|${curr.cardAlias}|${curr.billingDate}`;
                 if (!acc[key]) {
                     acc[key] = {
                         vendor: curr.vendor,
@@ -34,7 +43,7 @@ function App() {
                         currency: curr.currency,
                         date: curr.billingDate, // Use billing date for the report
                         cardAlias: curr.cardAlias,
-                        category: curr.category
+                        category: curr.category // Take the category of the first transaction
                     };
                 }
                 acc[key].amount += curr.amount;
@@ -96,7 +105,7 @@ function App() {
                 )}
 
                 {processedData.length > 0 && (
-                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    <div ref={resultsRef} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
                         <SanityCheck data={processedData} />
                         <ResultsTable data={processedData} />
                     </div>
