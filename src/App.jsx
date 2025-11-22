@@ -4,7 +4,7 @@ import { ResultsTable } from './components/ResultsTable';
 import { SanityCheck } from './components/SanityCheck';
 import { parseExcelFile } from './utils/parser';
 import { aggregateTransactions } from './utils/aggregator';
-import { Wallet } from 'lucide-react';
+import { Wallet, MessageSquare } from 'lucide-react';
 
 function App() {
     const [files, setFiles] = useState([]);
@@ -47,7 +47,18 @@ function App() {
     return (
         <div className="min-h-screen bg-slate-50 py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto space-y-10">
-                <header className="text-center space-y-4">
+                <header className="text-center space-y-4 relative">
+                    <div className="absolute top-0 right-0">
+                        <a
+                            href="https://forms.google.com/your-form-id" // TODO: Replace with your actual Google Form URL
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-white text-slate-600 rounded-xl shadow-sm ring-1 ring-slate-900/5 hover:text-indigo-600 hover:ring-indigo-500/20 transition-all text-sm font-medium"
+                        >
+                            <MessageSquare className="h-4 w-4" />
+                            Feedback
+                        </a>
+                    </div>
                     <div className="inline-flex items-center justify-center p-4 bg-white rounded-2xl shadow-sm ring-1 ring-slate-900/5 mb-4">
                         <Wallet className="h-8 w-8 text-indigo-600" />
                     </div>
