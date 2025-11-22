@@ -23,14 +23,14 @@ export function SanityCheck({ data }) {
                 <h3 className="text-xl font-semibold">Sanity Check</h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
                     <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Total Transactions</p>
-                    <p className="text-3xl font-bold text-slate-900 mt-2">{totalTransactions}</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2">{totalTransactions}</p>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
                     <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Unique Vendors</p>
-                    <p className="text-3xl font-bold text-slate-900 mt-2">{uniqueVendors}</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2">{uniqueVendors}</p>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
                     <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Total Sum</p>

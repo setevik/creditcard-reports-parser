@@ -45,7 +45,7 @@ function App() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-slate-50 py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto space-y-10">
                 <header className="text-center space-y-4">
                     <div className="inline-flex items-center justify-center p-4 bg-white rounded-2xl shadow-sm ring-1 ring-slate-900/5 mb-4">

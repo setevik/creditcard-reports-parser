@@ -31,28 +31,28 @@ export function ResultsTable({ data }) {
                 </button>
             </div>
 
-            <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm ring-1 ring-slate-900/5">
+            <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-sm ring-1 ring-slate-900/5">
                 <table className="min-w-full divide-y divide-slate-200 bg-white">
                     <thead className="bg-slate-50">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Vendor</th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Amount</th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Currency</th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date</th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Card</th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Category</th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Details</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Vendor</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Amount</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Currency</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Card</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Category</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Details</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
                         {data.map((row, idx) => (
                             <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">{row.vendor}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-mono">{row.amount.toFixed(2)}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{row.currency}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{row.date}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{row.cardAlias}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm font-medium text-slate-900">{row.vendor}</td>
+                                <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm text-slate-600 font-mono">{row.amount.toFixed(2)}</td>
+                                <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm text-slate-600">{row.currency}</td>
+                                <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm text-slate-600">{row.date}</td>
+                                <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm text-slate-600">{row.cardAlias}</td>
+                                <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm">
                                     <span className={`inline - flex items - center px - 2.5 py - 0.5 rounded - full text - xs font - medium
                     ${row.category === 'Food' ? 'bg-orange-100 text-orange-800' :
                                             row.category === 'Transport' ? 'bg-blue-100 text-blue-800' :
@@ -63,7 +63,7 @@ export function ResultsTable({ data }) {
                                         {row.category}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm text-slate-600">
                                     <button
                                         onClick={() => setSelectedRow(row)}
                                         className="p-1.5 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-indigo-600"
