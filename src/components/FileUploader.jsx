@@ -44,7 +44,7 @@ export function FileUploader({ files, setFiles, onProcess }) {
             <div
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
-                className="group relative border-2 border-dashed border-slate-300 rounded-xl p-12 text-center hover:border-indigo-500 hover:bg-indigo-50/50 transition-all duration-200 cursor-pointer bg-slate-50"
+                className="group relative border-2 border-dashed border-slate-300 rounded-xl p-6 sm:p-12 text-center hover:border-indigo-500 hover:bg-indigo-50/50 transition-all duration-200 cursor-pointer bg-slate-50"
                 onClick={() => document.getElementById('fileInput').click()}
             >
                 <input
@@ -67,7 +67,7 @@ export function FileUploader({ files, setFiles, onProcess }) {
                 <div className="space-y-4">
                     <div className="grid gap-4">
                         {files.map((fileObj) => (
-                            <div key={fileObj.id} className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm ring-1 ring-slate-900/5 transition-all hover:shadow-md">
+                            <div key={fileObj.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-white p-4 rounded-xl shadow-sm ring-1 ring-slate-900/5 transition-all hover:shadow-md">
                                 <div className="p-2 bg-green-50 rounded-lg">
                                     <FileSpreadsheet className="h-6 w-6 text-green-600" />
                                 </div>
@@ -80,11 +80,11 @@ export function FileUploader({ files, setFiles, onProcess }) {
                                     placeholder="Card Alias (e.g. Visa)"
                                     value={fileObj.alias}
                                     onChange={(e) => updateAlias(fileObj.id, e.target.value)}
-                                    className="border-0 bg-slate-50 rounded-lg px-4 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 w-48 transition-shadow"
+                                    className="border-0 bg-slate-50 rounded-lg px-4 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 w-full sm:w-48 transition-shadow"
                                 />
                                 <button
                                     onClick={(e) => { e.stopPropagation(); removeFile(fileObj.id); }}
-                                    className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                    className="self-end sm:self-center p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                 >
                                     <X className="h-5 w-5" />
                                 </button>
@@ -95,7 +95,7 @@ export function FileUploader({ files, setFiles, onProcess }) {
                     <div className="flex justify-end pt-4">
                         <button
                             onClick={onProcess}
-                            className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
+                            className="w-full sm:w-auto px-8 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
                         >
                             Process {files.length} Files
                         </button>
