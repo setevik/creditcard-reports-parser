@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react';
 import { Upload, X, FileSpreadsheet } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function FileUploader({ files, setFiles, onProcess }) {
+    const { t } = useLanguage();
+
     const handleDrop = useCallback((e) => {
         e.preventDefault();
         const droppedFiles = Array.from(e.dataTransfer.files).filter(f =>
@@ -58,9 +61,9 @@ export function FileUploader({ files, setFiles, onProcess }) {
                 <div className="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-50 group-hover:bg-indigo-100 transition-colors">
                     <Upload className="h-8 w-8 text-indigo-600" />
                 </div>
-                <p className="text-lg font-medium text-slate-900">Drop files here to upload</p>
-                <p className="text-sm text-slate-500 mt-2">or click to select from your computer</p>
-                <p className="text-xs text-slate-400 mt-4">Supports .xlsx, .xls, .csv</p>
+                <p className="text-lg font-medium text-slate-900">{t('dropFiles')}</p>
+                <p className="text-sm text-slate-500 mt-2">{t('clickToSelect')}</p>
+                <p className="text-xs text-slate-400 mt-4">{t('supports')}</p>
             </div>
 
             {files.length > 0 && (
@@ -77,7 +80,7 @@ export function FileUploader({ files, setFiles, onProcess }) {
                                 </div>
                                 <input
                                     type="text"
-                                    placeholder="Card Alias (e.g. Visa)"
+                                    placeholder={t('cardAliasPlaceholder')}
                                     value={fileObj.alias}
                                     onChange={(e) => updateAlias(fileObj.id, e.target.value)}
                                     className="border-0 bg-slate-50 rounded-lg px-4 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 w-full sm:w-48 transition-shadow"
@@ -97,7 +100,7 @@ export function FileUploader({ files, setFiles, onProcess }) {
                             onClick={onProcess}
                             className="w-full sm:w-auto px-8 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
                         >
-                            Process {files.length} Files
+                            {t('processFiles', { count: files.length })}
                         </button>
                     </div>
                 </div>
