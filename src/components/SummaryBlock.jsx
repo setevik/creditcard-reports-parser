@@ -1,7 +1,7 @@
 import React from 'react';
-import { Calculator, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Calculator, CheckCircle } from 'lucide-react';
 
-export function SanityCheck({ data }) {
+export function SummaryBlock({ data }) {
     if (!data || data.length === 0) return null;
 
     const totalTransactions = data.length;
@@ -20,7 +20,7 @@ export function SanityCheck({ data }) {
                 <div className="p-2 bg-indigo-50 rounded-lg">
                     <Calculator className="h-6 w-6 text-indigo-600" />
                 </div>
-                <h3 className="text-xl font-semibold">Sanity Check</h3>
+                <h3 className="text-xl font-semibold">Summary</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
@@ -49,7 +49,7 @@ export function SanityCheck({ data }) {
                 <div>
                     <p className="font-semibold text-blue-800">Verification Tip</p>
                     <p className="mt-1 text-blue-700 leading-relaxed">
-                        Compare the "Total Sum" above with the total amount shown in your original bank report PDF/Excel summary line to ensure all transactions were captured correctly.
+                        Compare the "Total Sum" above with the total amount shown in your bank account to ensure all transactions were captured correctly.
                     </p>
                 </div>
             </div>
