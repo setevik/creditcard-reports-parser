@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FileUploader } from './components/FileUploader';
 import { ResultsTable } from './components/ResultsTable';
-import { SanityCheck } from './components/SanityCheck';
+import { SummaryBlock } from './components/SummaryBlock';
 import { parseExcelFile } from './utils/parser';
 import { aggregateTransactions } from './utils/aggregator';
 import { Wallet, MessageSquare } from 'lucide-react';
@@ -63,7 +63,7 @@ function App() {
                         <Wallet className="h-8 w-8 text-indigo-600" />
                     </div>
                     <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-                        Expense Parser
+                        Expense Parser (Isracard / Cal / Max)
                     </h1>
                     <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                         Effortlessly parse, categorize, and export your credit card reports.
@@ -97,7 +97,7 @@ function App() {
 
                 {processedData.length > 0 && (
                     <div ref={resultsRef} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                        <SanityCheck data={processedData} />
+                        <SummaryBlock data={processedData} />
                         <ResultsTable data={processedData} />
                     </div>
                 )}
