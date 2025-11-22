@@ -1,7 +1,10 @@
 import React from 'react';
 import { Calculator, CheckCircle } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function SummaryBlock({ data }) {
+    const { t } = useLanguage();
+
     if (!data || data.length === 0) return null;
 
     const totalTransactions = data.length;
@@ -20,20 +23,20 @@ export function SummaryBlock({ data }) {
                 <div className="p-2 bg-indigo-50 rounded-lg">
                     <Calculator className="h-6 w-6 text-indigo-600" />
                 </div>
-                <h3 className="text-xl font-semibold">Summary</h3>
+                <h3 className="text-xl font-semibold">{t('summaryTitle')}</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Total Transactions</p>
+                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">{t('totalTransactions')}</p>
                     <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2">{totalTransactions}</p>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Unique Vendors</p>
+                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">{t('uniqueVendors')}</p>
                     <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2">{uniqueVendors}</p>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">Total Sum</p>
+                    <p className="text-sm font-medium text-slate-500 uppercase tracking-wide">{t('totalSum')}</p>
                     <div className="space-y-1 mt-2">
                         {Object.entries(sumsByCurrency).map(([curr, sum]) => (
                             <p key={curr} className="text-2xl font-bold text-slate-900">
@@ -47,9 +50,9 @@ export function SummaryBlock({ data }) {
             <div className="flex items-start gap-4 p-4 bg-blue-50 text-blue-900 rounded-xl text-sm border border-blue-100">
                 <CheckCircle className="h-5 w-5 flex-shrink-0 mt-0.5 text-blue-600" />
                 <div>
-                    <p className="font-semibold text-blue-800">Verification Tip</p>
+                    <p className="font-semibold text-blue-800">{t('verificationTipTitle')}</p>
                     <p className="mt-1 text-blue-700 leading-relaxed">
-                        Compare the "Total Sum" above with the total amount shown in your bank account to ensure all transactions were captured correctly.
+                        {t('verificationTipBody')}
                     </p>
                 </div>
             </div>

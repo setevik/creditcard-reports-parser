@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Copy, Check, List, X } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function ResultsTable({ data }) {
     const [copied, setCopied] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
+    const { t } = useLanguage();
 
     const handleCopy = () => {
-        const header = "Vendor\tAmount\tCurrency\tDate\tCard\tCategory";
+        const header = `${t('tableVendor')}\t${t('tableAmount')}\t${t('tableCurrency')}\t${t('tableDate')}\t${t('tableCard')}\t${t('tableCategory')}`;
         const rows = data.map(row =>
             `${row.vendor} \t${row.amount} \t${row.currency} \t${row.date} \t${row.cardAlias} \t${row.category} `
         ).join('\n');
@@ -21,13 +23,13 @@ export function ResultsTable({ data }) {
     return (
         <div className="space-y-4 relative">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-slate-900">Processed Expenses ({data.length})</h2>
+                <h2 className="text-xl font-semibold text-slate-900">{t('processedExpenses', { count: data.length })}</h2>
                 <button
                     onClick={handleCopy}
                     className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors shadow-sm text-sm font-medium"
                 >
                     {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                    {copied ? 'Copied!' : 'Copy to Clipboard'}
+                    {copied ? t('copied') : t('copyToClipboard')}
                 </button>
             </div>
 
@@ -35,13 +37,13 @@ export function ResultsTable({ data }) {
                 <table className="min-w-full divide-y divide-slate-200 bg-white">
                     <thead className="bg-slate-50">
                         <tr>
-                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Vendor</th>
-                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Amount</th>
-                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Currency</th>
-                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date</th>
-                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Card</th>
-                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Category</th>
-                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Details</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('tableVendor')}</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('tableAmount')}</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('tableCurrency')}</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('tableDate')}</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('tableCard')}</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('tableCategory')}</th>
+                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('tableDetails')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
@@ -100,9 +102,9 @@ export function ResultsTable({ data }) {
                             <table className="min-w-full divide-y divide-slate-100">
                                 <thead>
                                     <tr>
-                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Date</th>
-                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Amount</th>
-                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">Original Description</th>
+                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">{t('tableDate')}</th>
+                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">{t('tableAmount')}</th>
+                                        <th className="px-4 py-2 text-left text-xs font-semibold text-slate-500 uppercase">{t('modalOriginalDesc')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
