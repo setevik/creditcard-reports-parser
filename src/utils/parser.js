@@ -1,7 +1,8 @@
-import * as XLSX from 'xlsx';
-import { categorizeExpense } from './categorizer';
 
 export async function parseExcelFile(file, cardAlias) {
+    const XLSX = await import('xlsx');
+    const { categorizeExpense } = await import('./categorizer');
+
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
