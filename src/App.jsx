@@ -78,7 +78,7 @@ function AppContent() {
                     </p>
                 </header>
 
-                <div className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-900/5 overflow-hidden">
+                <main className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-900/5 overflow-hidden">
                     <div className="p-6 sm:p-8">
                         <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-2">
                             <span className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 text-sm font-bold">1</span>
@@ -86,7 +86,7 @@ function AppContent() {
                         </h2>
                         <FileUploader files={files} setFiles={setFiles} onProcess={handleProcess} />
                     </div>
-                </div>
+                </main>
 
                 {error && (
                     <div className="p-4 bg-red-50 text-red-700 rounded-xl border border-red-200 flex items-center gap-3">
@@ -113,7 +113,7 @@ function AppContent() {
                     <p className="text-sm text-slate-500 max-w-2xl mx-auto">
                         {t('footerText')}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500">
                         &copy; {new Date().getFullYear()} Credit Card Reports Parser.
                     </p>
                 </footer>
