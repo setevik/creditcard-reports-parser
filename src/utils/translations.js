@@ -1,7 +1,7 @@
 export const translations = {
     en: {
         title: "Expense Parser",
-        subtitle: "Effortlessly parse, categorize, and export your credit card reports. Secure client-side processing.",
+        subtitle: "Effortlessly parse, categorize, and export your credit card reports. Client-side processing, data not sent anywhere.",
         uploadTitle: "Upload Reports",
         dropFiles: "Drop files here to upload",
         clickToSelect: "or click to select from your computer",
@@ -65,7 +65,7 @@ export const translations = {
     },
     ru: {
         title: "Анализатор расходов",
-        subtitle: "Легко анализируйте, классифицируйте и экспортируйте отчеты по кредитным картам. Безопасная обработка на стороне клиента.",
+        subtitle: "Легко анализируйте, классифицируйте и экспортируйте отчеты по кредитным картам. Обработка на стороне клиента, данные не сохраняются.",
         uploadTitle: "Загрузить отчеты",
         dropFiles: "Перетащите файлы сюда",
         clickToSelect: "или нажмите, чтобы выбрать на компьютере",
