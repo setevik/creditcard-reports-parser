@@ -63,7 +63,7 @@ export function FileUploader({ files, setFiles, onProcess }) {
                 </div>
                 <p className="text-lg font-medium text-slate-900">{t('dropFiles')}</p>
                 <p className="text-sm text-slate-500 mt-2">{t('clickToSelect')}</p>
-                <p className="text-xs text-slate-400 mt-4">{t('supports')}</p>
+                <p className="text-xs text-slate-500 mt-4">{t('supports')}</p>
             </div>
 
             {files.length > 0 && (
