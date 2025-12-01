@@ -8,7 +8,6 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 manualChunks: {
-                    xlsx: ['xlsx'],
                     vendor: ['react', 'react-dom', 'lucide-react'],
                 },
             },
