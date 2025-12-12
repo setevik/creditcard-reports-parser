@@ -32,6 +32,10 @@ describe('Categorizer Logic', () => {
         expect(categorizeExpense('חברת החשמל')).toBe('Utilities');
         // "רב קו און ליין" -> "rb qv vn lyyn" -> Transport
         expect(categorizeExpense('רב קו און ליין')).toBe('Transport');
+        // "עיריית באר יעקב" -> "iriyat ber yaakov" -> Utilities
+        expect(categorizeExpense('עיריית באר יעקב')).toBe('Utilities');
+        // "עיריית תל אביב" -> "iriyat tl aviv" -> Utilities
+        expect(categorizeExpense('עיריית תל אביב')).toBe('Utilities');
         // "פוליצר" -> "pvlytsr" -> Supermarket
         expect(categorizeExpense('פוליצר')).toBe('Supermarket');
         // "סופר פארם" -> "svpr prm" -> Pharm
