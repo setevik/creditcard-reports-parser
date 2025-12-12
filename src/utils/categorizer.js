@@ -12,7 +12,7 @@ const KEYWORDS = {
     "Supermarket": ["shufersal", "shvprsl", "mega", "rami levy", "rmy lvy", "victory", "tiv taam", "super", "market", "makolet", "am:pm", "pvlytsr"],
     "Pharm": ["super-pharm", "svpr prm", "be", "pharmacy", "drugstore"],
     "Transport": ["gett", "uber", "yango", "moovit", "pango", "cello", "fuel", "gas", "dor alon", "paz", "sonol", "delek", "train", "bus", "rail", "parking", "rb qv"],
-    "Utilities": ["electric", "water", "gas", "arnona", "municipality", "internet", "partner", "cellcom", "slqvm", "pelephone", "hot", "bezeq", "v`d hbyt", "khbrt hkhshml"],
+    "Utilities": ["electric", "water", "gas", "arnona", "municipality", "iriyat", "`yryyt", "internet", "partner", "cellcom", "slqvm", "pelephone", "hot", "bezeq", "v`d hbyt", "khbrt hkhshml"],
     "Taxes": ["tax", "income tax", "vat", "bituach leumi", "mas hachnasa"],
     "AI tools": ["openai", "chatgpt", "anthropic", "claude", "midjourney", "github", "copilot", "gemini"],
     "Shopping": ["amazon", "ebay", "aliexpress", "zara", "h&m", "asos", "shein", "terminal x", "ksp", "ivory", "bug", "fox", "castro", "renuar", "clothing", "shoes", "mall"],
