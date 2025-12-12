@@ -4,14 +4,16 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 export function ResultsTable({ data }) {
     const [copied, setCopied] = useState(false);
+    const [roundUp, setRoundUp] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const { t } = useLanguage();
 
     const handleCopy = () => {
         const header = `${t('tableVendor')}\t${t('tableAmount')}\t${t('tableCurrency')}\t${t('tableDate')}\t${t('tableCard')}\t${t('tableCategory')}`;
-        const rows = data.map(row =>
-            `${row.vendor} \t${row.amount} \t${row.currency} \t${row.date} \t${row.cardAlias} \t${row.category} `
-        ).join('\n');
+        const rows = data.map(row => {
+            const amount = roundUp ? Math.ceil(row.amount) : row.amount;
+            return `${row.vendor} \t${amount} \t${row.currency} \t${row.date} \t${row.cardAlias} \t${row.category} `;
+        }).join('\n');
 
         navigator.clipboard.writeText(`${header} \n${rows} `);
         setCopied(true);
@@ -24,13 +26,24 @@ export function ResultsTable({ data }) {
         <div className="space-y-4 relative">
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold text-slate-900">{t('processedExpenses', { count: data.length })}</h2>
-                <button
-                    onClick={handleCopy}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors shadow-sm text-sm font-medium"
-                >
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                    {copied ? t('copied') : t('copyToClipboard')}
-                </button>
+                <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer text-sm text-slate-600 hover:text-slate-900 select-none">
+                        <input
+                            type="checkbox"
+                            checked={roundUp}
+                            onChange={(e) => setRoundUp(e.target.checked)}
+                            className="rounded border-slate-300 text-slate-900 focus:ring-slate-900 w-4 h-4"
+                        />
+                        {t('roundUp')}
+                    </label>
+                    <button
+                        onClick={handleCopy}
+                        className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors shadow-sm text-sm font-medium"
+                    >
+                        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                        {copied ? t('copied') : t('copyToClipboard')}
+                    </button>
+                </div>
             </div>
 
             <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-sm ring-1 ring-slate-900/5">
