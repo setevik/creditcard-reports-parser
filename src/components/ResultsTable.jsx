@@ -2,22 +2,35 @@ import React, { useState } from 'react';
 import { Copy, Check, List, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const CATEGORY_COLORS = {
+    Food: 'bg-orange-100 text-orange-800',
+    Transport: 'bg-blue-100 text-blue-800',
+    Shopping: 'bg-pink-100 text-pink-800',
+    Utilities: 'bg-purple-100 text-purple-800',
+};
+
+const DEFAULT_CATEGORY_COLOR = 'bg-slate-100 text-slate-800';
+
 export function ResultsTable({ data }) {
     const [copied, setCopied] = useState(false);
     const [roundUp, setRoundUp] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const { t } = useLanguage();
 
-    const handleCopy = () => {
+    const handleCopy = async () => {
         const header = `${t('tableVendor')}\t${t('tableAmount')}\t${t('tableCurrency')}\t${t('tableDate')}\t${t('tableCard')}\t${t('tableCategory')}`;
         const rows = data.map(row => {
             const amount = roundUp ? Math.ceil(row.amount) : row.amount;
-            return `${row.vendor} \t${amount} \t${row.currency} \t${row.date} \t${row.cardAlias} \t${row.category} `;
+            return `${row.vendor}\t${amount}\t${row.currency}\t${row.date}\t${row.cardAlias}\t${row.category}`;
         }).join('\n');
 
-        navigator.clipboard.writeText(`${header} \n${rows} `);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        try {
+            await navigator.clipboard.writeText(`${header}\n${rows}`);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy to clipboard:', err);
+        }
     };
 
     if (!data || data.length === 0) return null;
@@ -68,13 +81,7 @@ export function ResultsTable({ data }) {
                                 <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm text-slate-600">{row.date}</td>
                                 <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm text-slate-600">{row.cardAlias}</td>
                                 <td className="px-3 py-4 sm:px-6 whitespace-nowrap text-sm">
-                                    <span className={`inline - flex items - center px - 2.5 py - 0.5 rounded - full text - xs font - medium
-                    ${row.category === 'Food' ? 'bg-orange-100 text-orange-800' :
-                                            row.category === 'Transport' ? 'bg-blue-100 text-blue-800' :
-                                                row.category === 'Shopping' ? 'bg-pink-100 text-pink-800' :
-                                                    row.category === 'Utilities' ? 'bg-purple-100 text-purple-800' :
-                                                        'bg-slate-100 text-slate-800'
-                                        } `}>
+                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[row.category] || DEFAULT_CATEGORY_COLOR}`}>
                                         {row.category}
                                     </span>
                                 </td>
@@ -94,7 +101,14 @@ export function ResultsTable({ data }) {
             </div>
 
             {selectedRow && (
-                <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setSelectedRow(null)}>
+                <div
+                    className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+                    onClick={() => setSelectedRow(null)}
+                    onKeyDown={(e) => { if (e.key === 'Escape') setSelectedRow(null); }}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={selectedRow.vendor}
+                >
                     <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
                         <div className="p-6 border-b border-slate-100 flex justify-between items-center">
                             <div>

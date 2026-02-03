@@ -2,35 +2,29 @@ import React, { useCallback } from 'react';
 import { Upload, X, FileSpreadsheet } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const ACCEPTED_EXTENSIONS = ['.xls', '.xlsx', '.csv'];
+
+function filterAndWrapFiles(fileList) {
+    return Array.from(fileList)
+        .filter(f => ACCEPTED_EXTENSIONS.some(ext => f.name.endsWith(ext)))
+        .map(file => ({
+            file,
+            id: crypto.randomUUID(),
+            alias: ''
+        }));
+}
+
 export function FileUploader({ files, setFiles, onProcess }) {
     const { t } = useLanguage();
 
     const handleDrop = useCallback((e) => {
         e.preventDefault();
-        const droppedFiles = Array.from(e.dataTransfer.files).filter(f =>
-            f.name.endsWith('.xls') || f.name.endsWith('.xlsx') || f.name.endsWith('.csv')
-        );
-
-        const newFiles = droppedFiles.map(file => ({
-            file,
-            id: Math.random().toString(36).substr(2, 9),
-            alias: ''
-        }));
-
+        const newFiles = filterAndWrapFiles(e.dataTransfer.files);
         setFiles(prev => [...prev, ...newFiles]);
     }, [setFiles]);
 
     const handleFileInput = (e) => {
-        const selectedFiles = Array.from(e.target.files).filter(f =>
-            f.name.endsWith('.xls') || f.name.endsWith('.xlsx') || f.name.endsWith('.csv')
-        );
-
-        const newFiles = selectedFiles.map(file => ({
-            file,
-            id: Math.random().toString(36).substr(2, 9),
-            alias: ''
-        }));
-
+        const newFiles = filterAndWrapFiles(e.target.files);
         setFiles(prev => [...prev, ...newFiles]);
     };
 
@@ -49,6 +43,10 @@ export function FileUploader({ files, setFiles, onProcess }) {
                 onDragOver={(e) => e.preventDefault()}
                 className="group relative border-2 border-dashed border-slate-300 rounded-xl p-6 sm:p-12 text-center hover:border-indigo-500 hover:bg-indigo-50/50 transition-all duration-200 cursor-pointer bg-slate-50"
                 onClick={() => document.getElementById('fileInput').click()}
+                role="button"
+                tabIndex={0}
+                aria-label={t('dropFiles')}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.getElementById('fileInput').click(); } }}
             >
                 <input
                     type="file"
@@ -88,6 +86,7 @@ export function FileUploader({ files, setFiles, onProcess }) {
                                 <button
                                     onClick={(e) => { e.stopPropagation(); removeFile(fileObj.id); }}
                                     className="self-end sm:self-center p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                    aria-label={`Remove ${fileObj.file.name}`}
                                 >
                                     <X className="h-5 w-5" />
                                 </button>
