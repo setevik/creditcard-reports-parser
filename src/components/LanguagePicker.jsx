@@ -28,7 +28,11 @@ export function LanguagePicker() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
+                onKeyDown={(e) => { if (e.key === 'Escape') setIsOpen(false); }}
                 className="inline-flex items-center gap-2 px-3 py-2 bg-white text-slate-600 rounded-xl shadow-sm ring-1 ring-slate-900/5 hover:text-indigo-600 hover:ring-indigo-500/20 transition-all text-sm font-medium"
+                aria-expanded={isOpen}
+                aria-haspopup="listbox"
+                aria-label="Select language"
             >
                 <Globe className="h-4 w-4" />
                 <span className="uppercase">{language}</span>
@@ -36,10 +40,12 @@ export function LanguagePicker() {
             </button>
 
             {isOpen && (
-                <div className="absolute top-full left-0 mt-2 w-40 bg-white rounded-xl shadow-lg ring-1 ring-black/5 py-1 z-50 animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute top-full left-0 mt-2 w-40 bg-white rounded-xl shadow-lg ring-1 ring-black/5 py-1 z-50 animate-in fade-in zoom-in-95 duration-200" role="listbox" aria-label="Languages">
                     {languages.map((lang) => (
                         <button
                             key={lang.code}
+                            role="option"
+                            aria-selected={language === lang.code}
                             onClick={() => {
                                 setLanguage(lang.code);
                                 setIsOpen(false);
@@ -48,7 +54,7 @@ export function LanguagePicker() {
                                 ${language === lang.code ? 'text-indigo-600 font-medium bg-indigo-50/50' : 'text-slate-700'}
                             `}
                         >
-                            <span className="text-base">{lang.flag}</span>
+                            <span className="text-base" aria-hidden="true">{lang.flag}</span>
                             {lang.label}
                         </button>
                     ))}

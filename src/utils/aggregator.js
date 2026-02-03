@@ -1,5 +1,6 @@
 export function aggregateTransactions(transactions) {
-    // Aggregate by Vendor
+    if (!Array.isArray(transactions) || transactions.length === 0) return [];
+
     const aggregated = transactions.reduce((acc, curr) => {
         // Group by Vendor, Currency, Card, and Billing Date
         // We exclude Category from the key so that different categories for the same vendor are merged
