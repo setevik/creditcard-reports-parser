@@ -4,18 +4,15 @@ import { translations } from '../utils/translations';
 const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
-    const [language, setLanguage] = useState('en');
-
-    useEffect(() => {
-        // Auto-detect language
+    const [language, setLanguage] = useState(() => {
+        const saved = localStorage.getItem('language');
+        if (saved && ['en', 'he', 'ru', 'fr'].includes(saved)) return saved;
         const browserLang = navigator.language.split('-')[0];
-        if (['he', 'ru', 'fr'].includes(browserLang)) {
-            setLanguage(browserLang);
-        }
-    }, []);
+        return ['he', 'ru', 'fr'].includes(browserLang) ? browserLang : 'en';
+    });
 
     useEffect(() => {
-        // Handle RTL for Hebrew
+        localStorage.setItem('language', language);
         if (language === 'he') {
             document.documentElement.dir = 'rtl';
             document.documentElement.lang = 'he';
@@ -28,9 +25,8 @@ export function LanguageProvider({ children }) {
     const t = (key, params = {}) => {
         let text = translations[language][key] || translations['en'][key] || key;
 
-        // Replace params like {count}
         Object.keys(params).forEach(param => {
-            text = text.replace(`{${param}}`, params[param]);
+            text = text.replaceAll(`{${param}}`, params[param]);
         });
 
         return text;
