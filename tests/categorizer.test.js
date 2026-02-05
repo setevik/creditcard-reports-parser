@@ -86,4 +86,32 @@ describe('Categorizer Logic', () => {
     it('should return Misc for unknown vendors', () => {
         expect(categorizeExpense('Unknown Vendor 123')).toBe('Misc');
     });
+
+    it('should not false-positive short keywords within longer words', () => {
+        // "be" is a Pharm keyword but shouldn't match inside "uber" or "better"
+        expect(categorizeExpense('Uber Rides')).toBe('Transport');
+        expect(categorizeExpense('Better Business')).toBe('Misc');
+        // "hot" is Utilities but shouldn't match inside "hotel"
+        expect(categorizeExpense('Hotel California')).toBe('Travel');
+        // "bus" is Transport but shouldn't match inside "business"
+        expect(categorizeExpense('Business Solutions Ltd')).toBe('Misc');
+        // "tea" is Tea but shouldn't match inside "steam"
+        expect(categorizeExpense('STEAM Digital')).toBe('Games');
+    });
+
+    it('should correctly categorize deduplicated keywords to Electronics', () => {
+        // KSP, Ivory, Bug are Israeli electronics chains - now exclusively Electronics
+        expect(categorizeExpense('KSP Store')).toBe('Electronics');
+        expect(categorizeExpense('Ivory Computers')).toBe('Electronics');
+        expect(categorizeExpense('Bug Multistore')).toBe('Electronics');
+    });
+
+    it('should handle word-boundary short keywords correctly', () => {
+        // "be" as standalone word should match Pharm
+        expect(categorizeExpense('Be Pharmacy')).toBe('Pharm');
+        // "hot" as standalone word should match Utilities
+        expect(categorizeExpense('HOT Internet Services')).toBe('Utilities');
+        // "bus" as standalone word should match Transport
+        expect(categorizeExpense('Bus Station Payment')).toBe('Transport');
+    });
 });
