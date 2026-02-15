@@ -28,7 +28,7 @@ export async function parseExcelFile(file, cardAlias) {
                         const rowStr = row.join(' ').toLowerCase();
 
                         // Try to extract billing date
-                        // Example: "עסקאות לחיוב ב-10/11/2025"
+                        // Example: "עסקאות לחיוב ב-10/11/2025" or "לחיוב ב-10.02"
                         if (rowStr.includes('חיוב ב-')) {
                             const match = rowStr.match(/(\d{1,2}[./-]\d{1,2}[./-]\d{2,4})/);
                             if (match) {
@@ -38,10 +38,16 @@ export async function parseExcelFile(file, cardAlias) {
                                 if (parts.length === 3) {
                                     billingDate = `${parts[0].padStart(2, '0')}.${parts[1].padStart(2, '0')}.${parts[2]}`;
                                 }
+                            } else {
+                                // Try DD.MM format (no year) - common in Isracard reports
+                                const match2 = rowStr.match(/חיוב ב-(\d{1,2})[./-](\d{1,2})/);
+                                if (match2) {
+                                    billingDate = `${match2[1].padStart(2, '0')}.${match2[2].padStart(2, '0')}`;
+                                }
                             }
                         }
 
-                        if (rowStr.includes('תאריך') && (rowStr.includes('עסקה') || rowStr.includes('חיוב'))) {
+                        if (rowStr.includes('תאריך') && (rowStr.includes('עסקה') || rowStr.includes('רכישה') || rowStr.includes('חיוב'))) {
                             headerRowIndex = i;
                             if (row.includes('מטבע חיוב')) {
                                 format = 'max'; // Max/Leumi style
@@ -62,12 +68,33 @@ export async function parseExcelFile(file, cardAlias) {
                     headers.forEach((h, index) => {
                         if (!h) return;
                         const header = h.toString().replace(/\r\n/g, '\n').trim();
-                        if (header.includes('תאריך') && header.includes('עסקה')) colMap.date = index;
+                        if (header.includes('תאריך') && (header.includes('עסקה') || header.includes('רכישה'))) colMap.date = index;
                         if (header.includes('שם בית') && header.includes('עסק')) colMap.vendor = index;
                         if (header.includes('סכום') && header.includes('חיוב')) colMap.amount = index;
                         if (header.includes('מטבע') && header.includes('חיוב')) colMap.currency = index;
                         if (header.includes('ענף')) colMap.sector = index;
                     });
+
+                    // If billing date has only DD.MM (no year), infer year from first transaction
+                    if (billingDate && billingDate.split('.').length === 2) {
+                        for (const row of rows) {
+                            if (!row || row.length === 0 || colMap.date === undefined) break;
+                            const rawDate = row[colMap.date];
+                            if (!rawDate) continue;
+                            let yearStr = '';
+                            if (typeof rawDate === 'number') {
+                                const date = XLSX.SSF.parse_date_code(rawDate);
+                                yearStr = String(date.y);
+                            } else {
+                                const parts = rawDate.toString().trim().replace(/\//g, '.').split('.');
+                                if (parts.length === 3) yearStr = parts[2];
+                            }
+                            if (yearStr) {
+                                billingDate = `${billingDate}.${yearStr}`;
+                                break;
+                            }
+                        }
+                    }
 
                     rows.forEach(row => {
                         if (!row || row.length === 0) return;
