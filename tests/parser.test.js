@@ -77,4 +77,63 @@ describe('Parser Logic', () => {
         expect(foreignTx.amount).toBe(300);
         expect(foreignTx.currency).toBe('$');
     });
+
+    it('should parse Isracard format (תאריך רכישה header, DD.MM billing date)', async () => {
+        // Isracard uses "תאריך רכישה" instead of "תאריך עסקה" and
+        // billing date without year: "לחיוב ב-10.02"
+        const data = [
+            [],
+            ["פירוט עסקאות", null, "פברואר 2026"],
+            [],
+            [],
+            ["פלטינה מסטרקארד - 6841", null, null, null, null, null, null, "₪ 500.00"],
+            ["על שם ישראל ישראלי", null, null, null, null, null, null, "לחיוב ב-10.02"],
+            ["", "", "", "", "", "", "", ""],
+            [],
+            ["עסקאות למועד חיוב"],
+            ["תאריך רכישה", "שם בית עסק", "סכום עסקה", "מטבע עסקה", "סכום חיוב", "מטבע חיוב", "מס' שובר", "פירוט נוסף"],
+            ["05.02.26", "CLAUDE.AI SUBSCRIPTION", 82.24, "$", 257, "₪", "825909704", "אתר חו\"ל"],
+            ["02.02.26", "WOLT", 178.77, "₪", 178.77, "₪", "809845058", ""],
+            ["27.01.26", "מאפה נאמן באר יעקב", 10, "₪", 10, "₪", "783799349", ""],
+            ["", "סה\"כ לחיוב החודש בכרטיס בש\"ח", "", "", 445.77, "₪", "", ""],
+        ];
+
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "פירוט עסקאות");
+
+        const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+        const transactions = await parseExcelFile(buffer, 'Isracard 6841');
+
+        expect(transactions.length).toBe(3);
+
+        // Billing date should have year inferred from first transaction
+        expect(transactions[0].billingDate).toBe('10.02.26');
+
+        // Verify all transactions got the same billing date
+        transactions.forEach(t => {
+            expect(t.billingDate).toBe('10.02.26');
+            expect(t.cardAlias).toBe('Isracard 6841');
+        });
+
+        // Verify individual transactions
+        const claude = transactions.find(t => t.vendor.includes('CLAUDE'));
+        expect(claude).toBeDefined();
+        expect(claude.amount).toBe(257);
+        expect(claude.currency).toBe('₪');
+        expect(claude.transactionDate).toBe('05.02.26');
+
+        const wolt = transactions.find(t => t.vendor === 'WOLT');
+        expect(wolt).toBeDefined();
+        expect(wolt.amount).toBe(178.77);
+
+        const bakery = transactions.find(t => t.vendor.includes('מאפה'));
+        expect(bakery).toBeDefined();
+        expect(bakery.amount).toBe(10);
+
+        // Summary row should NOT be parsed as a transaction
+        const summary = transactions.find(t => t.vendor.includes('סה"כ'));
+        expect(summary).toBeUndefined();
+    });
 });
