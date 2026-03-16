@@ -6,7 +6,8 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { LanguagePicker } from './components/LanguagePicker';
 import { parseExcelFile } from './utils/parser';
 import { aggregateTransactions } from './utils/aggregator';
-import { Wallet, MessageSquare } from 'lucide-react';
+import { ExportGuide } from './components/ExportGuide';
+import { Wallet, MessageSquare, HelpCircle } from 'lucide-react';
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
@@ -15,6 +16,7 @@ function AppContent() {
     const [processedData, setProcessedData] = useState([]);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState(null);
+    const [page, setPage] = useState('main');
     const resultsRef = useRef(null);
     const { t, language } = useLanguage();
 
@@ -56,7 +58,14 @@ function AppContent() {
                     <div className="absolute top-0 left-0 z-10">
                         <LanguagePicker />
                     </div>
-                    <div className="absolute top-0 right-0 z-10">
+                    <div className="absolute top-0 right-0 z-10 flex items-center gap-2">
+                        <button
+                            onClick={() => setPage(page === 'guide' ? 'main' : 'guide')}
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-white text-slate-600 rounded-xl shadow-sm ring-1 ring-slate-900/5 hover:text-indigo-600 hover:ring-indigo-500/20 transition-all text-sm font-medium"
+                        >
+                            <HelpCircle className="h-4 w-4" />
+                            {t('exportGuideLink')}
+                        </button>
                         <a
                             href="https://forms.gle/nNbQziquuznchVBf8"
                             target="_blank"
@@ -78,35 +87,41 @@ function AppContent() {
                     </p>
                 </header>
 
-                <main className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-900/5 overflow-hidden">
-                    <div className="p-6 sm:p-8">
-                        <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 text-sm font-bold">1</span>
-                            {t('uploadTitle')}
-                        </h2>
-                        <FileUploader files={files} setFiles={setFiles} onProcess={handleProcess} />
-                    </div>
-                </main>
+                {page === 'guide' ? (
+                    <ExportGuide onBack={() => setPage('main')} />
+                ) : (
+                    <>
+                        <main className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-900/5 overflow-hidden">
+                            <div className="p-6 sm:p-8">
+                                <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-2">
+                                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 text-sm font-bold">1</span>
+                                    {t('uploadTitle')}
+                                </h2>
+                                <FileUploader files={files} setFiles={setFiles} onProcess={handleProcess} />
+                            </div>
+                        </main>
 
-                {error && (
-                    <div className="p-4 bg-red-50 text-red-700 rounded-xl border border-red-200 flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-red-500" />
-                        {error}
-                    </div>
-                )}
+                        {error && (
+                            <div className="p-4 bg-red-50 text-red-700 rounded-xl border border-red-200 flex items-center gap-3">
+                                <div className="w-2 h-2 rounded-full bg-red-500" />
+                                {error}
+                            </div>
+                        )}
 
-                {isProcessing && (
-                    <div className="text-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-                        <p className="text-slate-600 font-medium">{t('processing')}</p>
-                    </div>
-                )}
+                        {isProcessing && (
+                            <div className="text-center py-12">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                                <p className="text-slate-600 font-medium">{t('processing')}</p>
+                            </div>
+                        )}
 
-                {processedData.length > 0 && (
-                    <div ref={resultsRef} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                        <SummaryBlock data={processedData} />
-                        <ResultsTable data={processedData} />
-                    </div>
+                        {processedData.length > 0 && (
+                            <div ref={resultsRef} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                                <SummaryBlock data={processedData} />
+                                <ResultsTable data={processedData} />
+                            </div>
+                        )}
+                    </>
                 )}
 
                 <footer className="border-t border-slate-200 pt-8 mt-12 text-center space-y-6">
