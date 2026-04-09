@@ -17,6 +17,13 @@
   <meta property="og:title" content="Israel Credit Card Report Parser" />
   <meta property="og:description"
     content="Analyze your Israeli credit card reports (Isracard, Cal, Max) securely in your browser. כלי לניתוח דוחות אשראי ישראליים." />
+  <meta property="og:url" content="https://creditcard-reports-parser.vercel.app/" />
+  <link rel="canonical" href="https://creditcard-reports-parser.vercel.app/" />
+  <link rel="alternate" hreflang="en" href="https://creditcard-reports-parser.vercel.app/" />
+  <link rel="alternate" hreflang="he" href="https://creditcard-reports-parser.vercel.app/" />
+  <link rel="alternate" hreflang="ru" href="https://creditcard-reports-parser.vercel.app/" />
+  <link rel="alternate" hreflang="fr" href="https://creditcard-reports-parser.vercel.app/" />
+  <link rel="alternate" hreflang="x-default" href="https://creditcard-reports-parser.vercel.app/" />
 
   <!-- Structured Data: SoftwareApplication -->
   <script type="application/ld+json">
@@ -149,14 +156,16 @@
     .static-shell .shell-noscript{background:#fef3c7;border:1px solid #f59e0b;border-radius:.75rem;padding:1.5rem;text-align:center;margin-bottom:2rem}
     .static-shell .shell-noscript p{color:#92400e;font-weight:500;margin:0}
     @media(min-width:640px){.static-shell{padding:3rem 1.5rem}.static-shell h1{font-size:3rem}}
+    /* Hide static SEO shell once React populates #root */
+    #root:not(:empty)~.static-shell{display:none}
   </style>
 </head>
 
 <body>
-  <div id="root">
-    <!-- Static landing page content for SEO and no-JS rendering.
-         React's createRoot replaces this entirely on JS load. -->
-    <div class="static-shell">
+  <div id="root"></div>
+  <!-- Static SEO shell: always in the DOM for crawlers.
+       Hidden by CSS sibling rule once React populates #root. -->
+  <div class="static-shell">
       <div class="shell-container">
 
         <!-- ===== Header ===== -->
@@ -342,7 +351,6 @@
 
       </div>
     </div>
-  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
