@@ -1,0 +1,33 @@
+# Credit Card Reports Parser
+
+## What it does
+A free, browser-based tool for parsing Israeli credit card statements from
+Isracard, Cal (כאל), and Max (מקס). Upload an Excel or CSV export and get an
+instant categorized expense summary.
+
+## Capabilities
+- Parses .xlsx, .xls, and .csv files exported from Isracard, Cal, and Max
+- Automatically detects the card provider from the file structure
+- Categorizes transactions into 17 groups: Food, Supermarket, Transport,
+  Shopping, Utilities, Health, Entertainment, Education, Insurance,
+  Subscriptions, Government, Pets, Telecom, Fuel, and more
+- Supports multi-currency transactions (ILS, USD, EUR)
+- Handles multiple files from different cards and billing periods at once
+- Aggregates spending by vendor, category, and date
+- Provides export of parsed results
+- Multilingual UI (English, Hebrew, Russian, French)
+
+## Privacy & Security
+All processing runs entirely client-side in the browser using JavaScript.
+No data is ever uploaded to a server. There is no backend or database.
+
+## Supported Input
+Excel (.xlsx, .xls) and CSV (.csv) files exported from the official Isracard,
+Cal, or Max websites or mobile apps.
+
+## Limitations
+- Only supports Israeli credit card providers (Isracard, Cal, Max)
+- Requires files in the original export format from the provider
+- Does not support PDF statements
+- Categorization relies on keyword matching; unknown vendors are labeled "Other"
+- Requires JavaScript enabled in the browser
