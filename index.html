@@ -8,17 +8,17 @@
   <meta name="google-site-verification" content="_BX0m7u4abP4LEIvP4QpMfqwg-VLn24fqmsmfT2IS2Q" />
   <title>Israel Credit Card Report Parser - Analyze Isracard, Cal, Max Expenses</title>
   <meta name="description"
-    content="Free tool to parse and categorize Israeli credit card reports (Isracard, Cal, Max). Secure client-side processing. Convert Excel/CSV to expense summary. כלי לניתוח פירוט אשראי." />
+    content="Free tool to parse and categorize Israeli credit card reports (Isracard, Cal, Max). Secure client-side processing. Convert Excel/CSV to expense summary. כלי חינמי לניתוח דוחות כרטיס אשראי ישראלי — ישראכרט, כאל, מקס." />
   <meta name="keywords"
-    content="credit card parser, israel, isracard, cal, max, expense tracker, excel to summary, ניתוח אשראי, ישראכרט, כאל, מקס, анализ кредитных карт, израиль, analyse carte de crédit, israël" />
+    content="credit card parser, israel, isracard, cal, max, expense tracker, excel to summary, ניתוח אשראי, ישראכרט, כאל, מקס, פירוט עסקאות, דוח כרטיס אשראי, ניתוח הוצאות, анализ кредитных карт, израиль, analyse carte de crédit, israël" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Israel Credit Card Report Parser" />
   <meta property="og:description"
-    content="Analyze your Israeli credit card reports (Isracard, Cal, Max) securely in your browser." />
+    content="Analyze your Israeli credit card reports (Isracard, Cal, Max) securely in your browser. כלי לניתוח דוחות אשראי ישראליים." />
 
-  <!-- Structured Data -->
+  <!-- Structured Data: SoftwareApplication -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -26,15 +26,323 @@
       "name": "Credit Card Reports Parser",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Web Browser",
-      "description": "A secure, client-side tool to parse and categorize Israeli credit card reports from Isracard, Cal, and Max."
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": [
+        "Parse Isracard Excel/CSV reports",
+        "Parse Cal (כאל) Excel/CSV reports",
+        "Parse Max (מקס) Excel/CSV reports",
+        "Automatic expense categorization",
+        "Multi-currency support (ILS, USD, EUR)",
+        "Client-side processing — data never leaves your browser"
+      ],
+      "description": "A secure, client-side tool to parse and categorize Israeli credit card reports from Isracard, Cal, and Max. Upload your Excel or CSV report and get an instant categorized expense summary."
     }
   </script>
 
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I export my credit card report from Isracard?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Log in to the Isracard website (digital.isracard.co.il) or app, go to Charge Details (פירוט חיובים), select your billing period, and click the Export to Excel button. Save the downloaded .xlsx file and upload it to this tool."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I export my credit card report from Cal (כאל)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Log in to the Cal website (digital-web.cal-online.co.il) or the Cal app, navigate to your card's transaction details (פירוט עסקאות), select the billing month, and click Export to Excel (ייצוא לאקסל)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I export my credit card report from Max (מקס)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Log in to the Max website (max.co.il) or app, go to Charge Details (פירוט חיובים), select the billing month, and click Export to Excel (ייצוא לאקסל). Save and upload the file."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What file formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The parser supports .xlsx, .xls, and .csv files exported from Isracard, Cal, and Max. You can upload reports from multiple cards and billing periods at the same time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. All processing happens entirely in your browser. Your credit card data is never uploaded to any server — it stays on your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "איך מייצאים דוח כרטיס אשראי מישראכרט?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "היכנסו לאתר ישראכרט (digital.isracard.co.il) או לאפליקציה, נווטו לפירוט חיובים, בחרו את תקופת החיוב הרצויה ולחצו על ייצוא לאקסל. שמרו את הקובץ והעלו אותו לכלי."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "איך מייצאים דוח כרטיס אשראי מכאל?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "היכנסו לאתר כאל (digital-web.cal-online.co.il) או לאפליקציה, עברו לפירוט עסקאות, בחרו את חודש החיוב ולחצו על ייצוא לאקסל."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "האם המידע שלי בטוח?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "כן. כל העיבוד מתבצע במלואו בדפדפן שלכם. נתוני כרטיס האשראי שלכם לא נשלחים לשום שרת — הם נשארים במכשיר שלכם."
+          }
+        }
+      ]
+    }
+  </script>
 
+  <!-- Critical CSS for static shell (replaced by Tailwind on JS load) -->
+  <style>
+    .static-shell{font-family:Inter,system-ui,-apple-system,sans-serif;background:#f8fafc;min-height:100vh;padding:3rem 1rem}
+    .static-shell *{box-sizing:border-box;margin:0}
+    .static-shell .shell-container{max-width:64rem;margin:0 auto}
+    .static-shell header{text-align:center;margin-bottom:2.5rem}
+    .static-shell .shell-icon{display:inline-flex;align-items:center;justify-content:center;width:4rem;height:4rem;background:#fff;border-radius:1rem;box-shadow:0 1px 2px rgba(0,0,0,.05);border:1px solid rgba(15,23,42,.05);margin-bottom:1rem}
+    .static-shell .shell-icon svg{width:2rem;height:2rem;color:#4f46e5}
+    .static-shell h1{font-size:2.25rem;font-weight:700;letter-spacing:-.025em;color:#0f172a;margin-bottom:.5rem}
+    .static-shell .shell-subtitle{font-size:1.125rem;color:#475569;max-width:42rem;margin:0 auto}
+    .static-shell .shell-card{background:#fff;border-radius:1rem;box-shadow:0 1px 2px rgba(0,0,0,.05);border:1px solid rgba(15,23,42,.05);padding:2rem;margin-bottom:2rem}
+    .static-shell h2{font-size:1.5rem;font-weight:600;color:#0f172a;margin-bottom:1rem}
+    .static-shell h3{font-size:1.125rem;font-weight:600;color:#0f172a;margin-bottom:.5rem}
+    .static-shell p{color:#475569;line-height:1.7;margin-bottom:.75rem}
+    .static-shell .shell-upload{border:2px dashed #cbd5e1;border-radius:.75rem;padding:2.5rem 1.5rem;text-align:center;color:#64748b}
+    .static-shell .shell-upload p{margin-bottom:.25rem}
+    .static-shell .shell-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.5rem}
+    .static-shell .shell-feature{background:#f8fafc;border-radius:.75rem;padding:1rem 1.25rem;border:1px solid #e2e8f0}
+    .static-shell .shell-feature strong{color:#0f172a;display:block;margin-bottom:.25rem}
+    .static-shell .shell-feature p{font-size:.875rem;margin:0}
+    .static-shell .shell-he{direction:rtl;text-align:right}
+    .static-shell .shell-divider{border:none;border-top:1px solid #e2e8f0;margin:2.5rem 0}
+    .static-shell details{border-bottom:1px solid #e2e8f0;padding:1rem 0}
+    .static-shell details:last-of-type{border-bottom:none}
+    .static-shell summary{font-weight:600;color:#0f172a;cursor:pointer;list-style:none;padding:.25rem 0}
+    .static-shell summary::-webkit-details-marker{display:none}
+    .static-shell summary::before{content:"+ ";color:#4f46e5;font-weight:700;margin-right:.5rem}
+    .static-shell details[open] summary::before{content:"- "}
+    .static-shell details p{margin-top:.5rem;padding-left:1.25rem}
+    .static-shell .shell-he details p{padding-left:0;padding-right:1.25rem}
+    .static-shell .shell-he summary::before{margin-right:0;margin-left:.5rem}
+    .static-shell footer{border-top:1px solid #e2e8f0;padding-top:2rem;margin-top:3rem;text-align:center}
+    .static-shell footer p{font-size:.875rem;color:#64748b}
+    .static-shell .shell-noscript{background:#fef3c7;border:1px solid #f59e0b;border-radius:.75rem;padding:1.5rem;text-align:center;margin-bottom:2rem}
+    .static-shell .shell-noscript p{color:#92400e;font-weight:500;margin:0}
+    @media(min-width:640px){.static-shell{padding:3rem 1.5rem}.static-shell h1{font-size:3rem}}
+  </style>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Static landing page content for SEO and no-JS rendering.
+         React's createRoot replaces this entirely on JS load. -->
+    <div class="static-shell">
+      <div class="shell-container">
+
+        <!-- ===== Header ===== -->
+        <header>
+          <div class="shell-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+          </div>
+          <h1>Expense Parser</h1>
+          <p class="shell-subtitle">Effortlessly parse, categorize, and export your credit card reports. Client-side processing &mdash; your data never leaves your device.</p>
+        </header>
+
+        <noscript>
+          <div class="shell-noscript">
+            <p>This tool requires JavaScript to process your credit card reports. Please enable JavaScript in your browser to use the parser.</p>
+          </div>
+        </noscript>
+
+        <!-- ===== Hero Section — English ===== -->
+        <section class="shell-card" lang="en">
+          <h2>Analyze Your Israeli Credit Card Reports Instantly</h2>
+          <p>
+            Credit Card Reports Parser is a free, browser-based tool that turns your raw credit card statements into a clear, categorized expense summary. Upload Excel or CSV files exported from
+            <strong>Isracard</strong> (ישראכרט), <strong>Cal</strong> (כאל), or <strong>Max</strong> (מקס) and get an instant breakdown of your spending by vendor, category, date, and currency.
+          </p>
+          <p>
+            Whether you are tracking monthly household expenses, preparing financial reports, or just want a clearer picture of where your money goes, this tool does the heavy lifting.
+            It automatically categorizes transactions into groups like Food, Supermarket, Transport, Shopping, Utilities, and more.
+          </p>
+          <p>
+            Your privacy comes first. All file processing happens entirely in your browser &mdash; no data is ever uploaded to a server.
+            You can safely analyze sensitive financial information knowing it stays on your device.
+          </p>
+          <div class="shell-features">
+            <div class="shell-feature">
+              <strong>Isracard</strong>
+              <p>Full support for Isracard Excel &amp; CSV reports (.xlsx, .xls, .csv)</p>
+            </div>
+            <div class="shell-feature">
+              <strong>Cal / כאל</strong>
+              <p>Full support for Cal credit card statement exports</p>
+            </div>
+            <div class="shell-feature">
+              <strong>Max / מקס</strong>
+              <p>Full support for Max credit card billing reports</p>
+            </div>
+            <div class="shell-feature">
+              <strong>17 Categories</strong>
+              <p>Auto-categorize into Food, Transport, Shopping, Utilities, and more</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Hero Section — Hebrew ===== -->
+        <section class="shell-card shell-he" lang="he" dir="rtl">
+          <h2>ניתוח דוחות כרטיס אשראי ישראלי — חינם ומאובטח</h2>
+          <p>
+            כלי חינמי לניתוח פירוט אשראי שמאפשר להעלות קבצי אקסל או CSV מ<strong>ישראכרט</strong>, <strong>כאל</strong> או <strong>מקס</strong> ולקבל סיכום הוצאות מפורט ומסודר לפי קטגוריות, בתי עסק, תאריכים ומטבעות.
+          </p>
+          <p>
+            הכלי מזהה אוטומטית את סוג הדוח ומסווג את העסקאות לקטגוריות כמו מזון, סופרמרקט, תחבורה, קניות, חשבונות, בריאות ועוד.
+            מתאים למעקב הוצאות חודשי, הכנת דוחות כספיים, או סתם להבנה טובה יותר לאן הכסף הולך.
+          </p>
+          <p>
+            הפרטיות שלכם חשובה לנו. כל העיבוד מתבצע במלואו בדפדפן — אף מידע לא נשלח לשרת. אתם יכולים לנתח מידע פיננסי רגיש בביטחון מלא.
+          </p>
+          <div class="shell-features">
+            <div class="shell-feature">
+              <strong>ישראכרט</strong>
+              <p>תמיכה מלאה בדוחות אקסל ו-CSV של ישראכרט</p>
+            </div>
+            <div class="shell-feature">
+              <strong>כאל</strong>
+              <p>תמיכה מלאה בייצוא פירוט עסקאות מכאל</p>
+            </div>
+            <div class="shell-feature">
+              <strong>מקס</strong>
+              <p>תמיכה מלאה בדוחות חיוב של מקס</p>
+            </div>
+            <div class="shell-feature">
+              <strong>17 קטגוריות</strong>
+              <p>סיווג אוטומטי — מזון, תחבורה, קניות, חשבונות ועוד</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Upload Placeholder ===== -->
+        <section class="shell-card">
+          <h2>Upload Reports</h2>
+          <div class="shell-upload">
+            <p><strong>Drop files here to upload</strong></p>
+            <p>or click to select from your computer</p>
+            <p style="margin-top:.75rem;font-size:.875rem">Supports .xlsx, .xls, .csv</p>
+          </div>
+        </section>
+
+        <hr class="shell-divider" />
+
+        <!-- ===== FAQ Section — English ===== -->
+        <section class="shell-card" lang="en">
+          <h2>Frequently Asked Questions</h2>
+
+          <details>
+            <summary>How do I export my credit card report from Isracard?</summary>
+            <p>Log in to the Isracard website (digital.isracard.co.il) or app. Go to <strong>Charge Details</strong> (פירוט חיובים), select the billing period you want, and click the <strong>Export to Excel</strong> button. Save the downloaded .xlsx file and upload it here.</p>
+          </details>
+
+          <details>
+            <summary>How do I export my report from Cal (כאל)?</summary>
+            <p>Log in to the Cal website (digital-web.cal-online.co.il) or app. Navigate to your card&apos;s <strong>Transaction Details</strong> (פירוט עסקאות), select the billing month, and click <strong>Export to Excel</strong> (ייצוא לאקסל). Save and upload the file.</p>
+          </details>
+
+          <details>
+            <summary>How do I export my report from Max (מקס)?</summary>
+            <p>Log in to the Max website (max.co.il) or app. Go to <strong>Charge Details</strong> (פירוט חיובים), select the billing month, and click <strong>Export to Excel</strong> (ייצוא לאקסל). Save and upload the file.</p>
+          </details>
+
+          <details>
+            <summary>What file formats are supported?</summary>
+            <p>The parser supports <strong>.xlsx</strong>, <strong>.xls</strong>, and <strong>.csv</strong> files exported from Isracard, Cal, and Max. You can upload reports from multiple cards and billing periods at the same time.</p>
+          </details>
+
+          <details>
+            <summary>Is my financial data safe?</summary>
+            <p>Yes. All processing happens entirely in your browser using JavaScript. Your credit card data is <strong>never uploaded to any server</strong> &mdash; it stays on your device. There is no backend, no database, and no tracking of your financial information.</p>
+          </details>
+
+          <details>
+            <summary>What expense categories are available?</summary>
+            <p>The tool auto-categorizes transactions into 17 categories: Food, Supermarket, Transport, Shopping, Utilities, Health/Pharma, Entertainment, Education, Insurance, Subscriptions, Government, Pets, Telecom, Fuel, and more. Unknown vendors are marked as "Other."</p>
+          </details>
+
+          <details>
+            <summary>Can I upload reports from multiple cards at once?</summary>
+            <p>Yes. You can upload multiple files from different cards and different billing periods. The parser will combine all transactions into a single summary, letting you see all your expenses in one place.</p>
+          </details>
+        </section>
+
+        <!-- ===== FAQ Section — Hebrew ===== -->
+        <section class="shell-card shell-he" lang="he" dir="rtl">
+          <h2>שאלות נפוצות</h2>
+
+          <details>
+            <summary>איך מייצאים דוח כרטיס אשראי מישראכרט?</summary>
+            <p>היכנסו לאתר ישראכרט (digital.isracard.co.il) או לאפליקציה. עברו ל<strong>פירוט חיובים</strong>, בחרו את תקופת החיוב הרצויה ולחצו על כפתור <strong>ייצוא לאקסל</strong>. שמרו את הקובץ שהורד והעלו אותו לכלי.</p>
+          </details>
+
+          <details>
+            <summary>איך מייצאים דוח מכאל?</summary>
+            <p>היכנסו לאתר כאל (digital-web.cal-online.co.il) או לאפליקציה. נווטו ל<strong>פירוט עסקאות</strong> של הכרטיס, בחרו את חודש החיוב ולחצו על <strong>ייצוא לאקסל</strong>.</p>
+          </details>
+
+          <details>
+            <summary>איך מייצאים דוח ממקס?</summary>
+            <p>היכנסו לאתר מקס (max.co.il) או לאפליקציה. עברו ל<strong>פירוט חיובים</strong>, בחרו את חודש החיוב ולחצו על <strong>ייצוא לאקסל</strong>. שמרו את הקובץ והעלו אותו.</p>
+          </details>
+
+          <details>
+            <summary>אילו פורמטים נתמכים?</summary>
+            <p>הכלי תומך בקבצי <strong>.xlsx</strong>, <strong>.xls</strong> ו-<strong>.csv</strong> שיוצאו מישראכרט, כאל ומקס. ניתן להעלות דוחות ממספר כרטיסים ותקופות חיוב בו-זמנית.</p>
+          </details>
+
+          <details>
+            <summary>האם המידע הפיננסי שלי בטוח?</summary>
+            <p>כן. כל העיבוד מתבצע במלואו בדפדפן שלכם. נתוני כרטיס האשראי <strong>לא נשלחים לשום שרת</strong> — הם נשארים במכשיר שלכם. אין שרת, אין מסד נתונים ואין מעקב אחר המידע הפיננסי שלכם.</p>
+          </details>
+
+          <details>
+            <summary>אילו קטגוריות הוצאות זמינות?</summary>
+            <p>הכלי מסווג עסקאות אוטומטית ל-17 קטגוריות: מזון, סופרמרקט, תחבורה, קניות, חשבונות, בריאות, בידור, חינוך, ביטוח, מנויים, ממשלתי, חיות מחמד, תקשורת, דלק ועוד. עסקאות שלא זוהו מסומנות כ&quot;אחר&quot;.</p>
+          </details>
+
+          <details>
+            <summary>אפשר להעלות דוחות ממספר כרטיסים בו-זמנית?</summary>
+            <p>כן. ניתן להעלות מספר קבצים מכרטיסים שונים ותקופות חיוב שונות. הכלי ישלב את כל העסקאות לסיכום אחד, כך שתוכלו לראות את כל ההוצאות במקום אחד.</p>
+          </details>
+        </section>
+
+        <!-- ===== Footer ===== -->
+        <footer>
+          <p>Credit Card Reports Parser. All processing happens locally on your device.</p>
+          <p>כלי לניתוח דוחות כרטיסי אשראי. כל העיבוד מתבצע באופן מקומי במכשיר שלכם.</p>
+        </footer>
+
+      </div>
+    </div>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
