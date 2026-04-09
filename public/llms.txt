@@ -15,7 +15,7 @@ instant categorized expense summary.
 - Handles multiple files from different cards and billing periods at once
 - Aggregates spending by vendor, category, and date
 - Provides export of parsed results
-- Bilingual UI (English and Hebrew)
+- Multilingual UI (English, Hebrew, Russian, French)
 
 ## Privacy & Security
 All processing runs entirely client-side in the browser using JavaScript.
