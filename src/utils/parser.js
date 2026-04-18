@@ -69,10 +69,11 @@ export async function parseExcelFile(file, cardAlias) {
                         if (!h) return;
                         const header = h.toString().replace(/\r\n/g, '\n').trim();
                         if (header.includes('תאריך') && (header.includes('עסקה') || header.includes('רכישה'))) colMap.date = index;
+                        if (header.includes('תאריך') && header.includes('חיוב')) colMap.billingDate = index;
                         if (header.includes('שם בית') && header.includes('עסק')) colMap.vendor = index;
                         if (header.includes('סכום') && header.includes('חיוב')) colMap.amount = index;
                         if (header.includes('מטבע') && header.includes('חיוב')) colMap.currency = index;
-                        if (header.includes('ענף')) colMap.sector = index;
+                        if (header.includes('ענף') || header.includes('קטגוריה')) colMap.sector = index;
                     });
 
                     // If billing date has only DD.MM (no year), infer year from first transaction
@@ -96,6 +97,20 @@ export async function parseExcelFile(file, cardAlias) {
                         }
                     }
 
+                    const normalizeDate = (raw) => {
+                        if (raw === undefined || raw === null || raw === '') return '';
+                        if (typeof raw === 'number') {
+                            const d = XLSX.SSF.parse_date_code(raw);
+                            return `${String(d.d).padStart(2, '0')}.${String(d.m).padStart(2, '0')}.${d.y}`;
+                        }
+                        const s = raw.toString().trim().replace(/\//g, '.').replace(/-/g, '.');
+                        const parts = s.split('.');
+                        if (parts.length === 3) {
+                            return `${parts[0].padStart(2, '0')}.${parts[1].padStart(2, '0')}.${parts[2]}`;
+                        }
+                        return s;
+                    };
+
                     rows.forEach(row => {
                         if (!row || row.length === 0) return;
 
@@ -110,22 +125,14 @@ export async function parseExcelFile(file, cardAlias) {
 
                         if (!rawDate || !amount) return;
 
-                        // Parse transaction date (for reference, though we use billing date for grouping)
-                        let dateStr = '';
-                        if (typeof rawDate === 'number') {
-                            const date = XLSX.SSF.parse_date_code(rawDate);
-                            const day = date.d.toString().padStart(2, '0');
-                            const month = date.m.toString().padStart(2, '0');
-                            dateStr = `${day}.${month}.${date.y}`;
-                        } else {
-                            // Try to parse string date if possible, otherwise keep as is but replace / with .
-                            dateStr = rawDate.toString().trim().replace(/\//g, '.');
-                            // Ensure zero padding if it looks like a date
-                            const parts = dateStr.split('.');
-                            if (parts.length === 3) {
-                                dateStr = `${parts[0].padStart(2, '0')}.${parts[1].padStart(2, '0')}.${parts[2]}`;
-                            }
+                        const dateStr = normalizeDate(rawDate);
+
+                        // Prefer per-row billing date column (used by Max) over header-extracted date
+                        let rowBillingDate = '';
+                        if (colMap.billingDate !== undefined) {
+                            rowBillingDate = normalizeDate(row[colMap.billingDate]);
                         }
+                        if (!rowBillingDate) rowBillingDate = billingDate;
 
                         // Clean amount
                         let cleanAmount = amount;
@@ -142,7 +149,7 @@ export async function parseExcelFile(file, cardAlias) {
                             amount: cleanAmount,
                             currency: currency || '₪',
                             transactionDate: dateStr,
-                            billingDate: billingDate || dateStr, // Fallback to transaction date if billing date not found
+                            billingDate: rowBillingDate || dateStr, // Fallback to transaction date if billing date not found
                             cardAlias: cardAlias,
                             category: category,
                             originalRow: row

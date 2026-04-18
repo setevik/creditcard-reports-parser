@@ -14,7 +14,7 @@ describe('Parser Logic', () => {
     it('should parse standard format (Isracard/Visa)', async () => {
         // Create a mock standard Excel file
         const data = [
-            ["שם כרטיס", "Visa 3234"],
+            ["שם כרטיס", "Visa XXXX"],
             ["עסקאות לחיוב ב-15/11/2025"],
             [],
             ["תאריך עסקה", "שם בית העסק", "סכום חיוב", "מטבע חיוב", "ענף"],
@@ -28,7 +28,7 @@ describe('Parser Logic', () => {
 
         const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
-        const transactions = await parseExcelFile(buffer, 'Visa 3234');
+        const transactions = await parseExcelFile(buffer, 'Visa XXXX');
 
         expect(transactions.length).toBe(2);
         expect(transactions[0].vendor).toBe('SUPERMARKET');
@@ -36,7 +36,7 @@ describe('Parser Logic', () => {
         expect(transactions[0].currency).toBe('₪');
         expect(transactions[0].transactionDate).toBe('01.11.2025');
         expect(transactions[0].billingDate).toBe('15.11.2025');
-        expect(transactions[0].cardAlias).toBe('Visa 3234');
+        expect(transactions[0].cardAlias).toBe('Visa XXXX');
     });
 
     it('should parse multi-sheet format (Max)', async () => {
@@ -78,6 +78,41 @@ describe('Parser Logic', () => {
         expect(foreignTx.currency).toBe('$');
     });
 
+    it('should parse Max format with per-row billing date column (תאריך חיוב)', async () => {
+        // New Max format has no "לחיוב ב-" text - billing date is a per-row column
+        const data = [
+            ["כל המשתמשים (1)"],
+            ["XXXX-max executive"],
+            ["04/2026"],
+            ["תאריך עסקה", "שם בית העסק", "קטגוריה", "סוג עסקה", "4 ספרות אחרונות", "סכום עסקה", "מטבע עסקה", "סכום חיוב", "מטבע חיוב", "תאריך חיוב"],
+            ["10-03-2026", "מאפה לדוגמה", "מזון וצריכה", "רגילה", "XXXX", 26, "₪", 26, "₪", "10-04-2026"],
+            ["15-03-2026", "מאפה לדוגמה", "מזון וצריכה", "רגילה", "XXXX", 20, "₪", 20, "₪", "10-04-2026"],
+            ["16-03-2026", "מאפה לדוגמה", "מזון וצריכה", "רגילה", "XXXX", 20, "₪", 20, "₪", "10-04-2026"],
+            ["25-03-2026", "חנות לדוגמה", "שונות", "רגילה", "XXXX", 73, "₪", 73, "₪", "10-04-2026"],
+        ];
+
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+        const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+        const transactions = await parseExcelFile(buffer, 'Max');
+
+        expect(transactions.length).toBe(4);
+
+        // All transactions share the same billing date from the per-row column
+        transactions.forEach(t => {
+            expect(t.billingDate).toBe('10.04.2026');
+        });
+
+        // Transaction dates preserved separately
+        const first = transactions.find(t => t.transactionDate === '10.03.2026');
+        expect(first).toBeDefined();
+        expect(first.vendor).toBe('מאפה לדוגמה');
+        expect(first.amount).toBe(26);
+    });
+
     it('should parse Isracard format (תאריך רכישה header, DD.MM billing date)', async () => {
         // Isracard uses "תאריך רכישה" instead of "תאריך עסקה" and
         // billing date without year: "לחיוב ב-10.02"
@@ -86,15 +121,15 @@ describe('Parser Logic', () => {
             ["פירוט עסקאות", null, "פברואר 2026"],
             [],
             [],
-            ["פלטינה מסטרקארד - 6841", null, null, null, null, null, null, "₪ 500.00"],
+            ["פלטינה מסטרקארד - XXXX", null, null, null, null, null, null, "₪ 500.00"],
             ["על שם ישראל ישראלי", null, null, null, null, null, null, "לחיוב ב-10.02"],
             ["", "", "", "", "", "", "", ""],
             [],
             ["עסקאות למועד חיוב"],
             ["תאריך רכישה", "שם בית עסק", "סכום עסקה", "מטבע עסקה", "סכום חיוב", "מטבע חיוב", "מס' שובר", "פירוט נוסף"],
-            ["05.02.26", "CLAUDE.AI SUBSCRIPTION", 82.24, "$", 257, "₪", "825909704", "אתר חו\"ל"],
-            ["02.02.26", "WOLT", 178.77, "₪", 178.77, "₪", "809845058", ""],
-            ["27.01.26", "מאפה נאמן באר יעקב", 10, "₪", 10, "₪", "783799349", ""],
+            ["05.02.26", "CLAUDE.AI SUBSCRIPTION", 82.24, "$", 257, "₪", "000000001", "אתר חו\"ל"],
+            ["02.02.26", "WOLT", 178.77, "₪", 178.77, "₪", "000000002", ""],
+            ["27.01.26", "מאפה לדוגמה", 10, "₪", 10, "₪", "000000003", ""],
             ["", "סה\"כ לחיוב החודש בכרטיס בש\"ח", "", "", 445.77, "₪", "", ""],
         ];
 
@@ -104,7 +139,7 @@ describe('Parser Logic', () => {
 
         const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
-        const transactions = await parseExcelFile(buffer, 'Isracard 6841');
+        const transactions = await parseExcelFile(buffer, 'Isracard XXXX');
 
         expect(transactions.length).toBe(3);
 
@@ -114,7 +149,7 @@ describe('Parser Logic', () => {
         // Verify all transactions got the same billing date
         transactions.forEach(t => {
             expect(t.billingDate).toBe('10.02.26');
-            expect(t.cardAlias).toBe('Isracard 6841');
+            expect(t.cardAlias).toBe('Isracard XXXX');
         });
 
         // Verify individual transactions
