@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Upload, X, FileSpreadsheet } from 'lucide-react';
+import { Upload, X, FileSpreadsheet, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { getSavedAliases } from '../utils/cardAliases';
+import { getSavedAliases, clearAliases } from '../utils/cardAliases';
 
 const ACCEPTED_EXTENSIONS = ['.xls', '.xlsx', '.csv'];
 
@@ -44,9 +44,16 @@ export function FileUploader({ files, setFiles, onProcess }) {
         setFiles(prev => prev.map(f => f.id === id ? { ...f, alias } : f));
     };
 
+    const handleClearAliases = () => {
+        clearAliases();
+        setSavedAliases([]);
+    };
+
+    const hasSavedAliases = savedAliases.length > 0;
+
     return (
         <div className="space-y-6">
-            {savedAliases.length > 0 && (
+            {hasSavedAliases && (
                 <datalist id={ALIAS_DATALIST_ID}>
                     {savedAliases.map((alias) => (
                         <option key={alias} value={alias} />
@@ -91,14 +98,23 @@ export function FileUploader({ files, setFiles, onProcess }) {
                                     <p className="text-sm font-medium text-slate-900 truncate">{fileObj.file.name}</p>
                                     <p className="text-xs text-slate-500">{(fileObj.file.size / 1024).toFixed(1)} KB</p>
                                 </div>
-                                <input
-                                    type="text"
-                                    list={savedAliases.length > 0 ? ALIAS_DATALIST_ID : undefined}
-                                    placeholder={t('cardAliasPlaceholder')}
-                                    value={fileObj.alias}
-                                    onChange={(e) => updateAlias(fileObj.id, e.target.value)}
-                                    className="border-0 bg-slate-50 rounded-lg px-4 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 w-full sm:w-48 transition-shadow"
-                                />
+                                <div className="relative w-full sm:w-48">
+                                    <input
+                                        type="text"
+                                        list={hasSavedAliases ? ALIAS_DATALIST_ID : undefined}
+                                        aria-label={t('cardAliasLabel')}
+                                        placeholder={t('cardAliasPlaceholder')}
+                                        value={fileObj.alias}
+                                        onChange={(e) => updateAlias(fileObj.id, e.target.value)}
+                                        className={`border-0 bg-slate-50 rounded-lg px-4 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500 w-full transition-shadow ${hasSavedAliases ? 'pe-9' : ''}`}
+                                    />
+                                    {hasSavedAliases && (
+                                        <ChevronDown
+                                            className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400"
+                                            aria-hidden="true"
+                                        />
+                                    )}
+                                </div>
                                 <button
                                     onClick={(e) => { e.stopPropagation(); removeFile(fileObj.id); }}
                                     className="self-end sm:self-center p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
@@ -110,7 +126,24 @@ export function FileUploader({ files, setFiles, onProcess }) {
                         ))}
                     </div>
 
-                    <div className="flex justify-end pt-4">
+                    <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                        {hasSavedAliases ? (
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                                <span className="inline-flex items-center gap-1.5">
+                                    <ChevronDown className="h-3.5 w-3.5 text-slate-400" aria-hidden="true" />
+                                    {t('savedCardsHint')}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={handleClearAliases}
+                                    className="font-medium text-slate-500 underline-offset-2 hover:text-red-500 hover:underline transition-colors"
+                                >
+                                    {t('clearSavedCards')}
+                                </button>
+                            </div>
+                        ) : (
+                            <span />
+                        )}
                         <button
                             onClick={onProcess}
                             className="w-full sm:w-auto px-8 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"

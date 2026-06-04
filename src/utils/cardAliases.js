@@ -40,3 +40,12 @@ export function saveAliases(aliases) {
     }
     return trimmed;
 }
+
+// Forget all previously saved aliases.
+export function clearAliases() {
+    try {
+        localStorage.removeItem(STORAGE_KEY);
+    } catch {
+        // Ignore storage failures.
+    }
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { getSavedAliases, saveAliases } from '../src/utils/cardAliases';
+import { getSavedAliases, saveAliases, clearAliases } from '../src/utils/cardAliases';
 
 function createLocalStorageMock() {
     let store = {};
@@ -55,6 +55,12 @@ describe('Card Alias Storage', () => {
 
     it('tolerates corrupted storage contents', () => {
         localStorage.setItem('usedCardAliases', 'not-json');
+        expect(getSavedAliases()).toEqual([]);
+    });
+
+    it('clears all saved aliases', () => {
+        saveAliases(['Visa', 'Mastercard']);
+        clearAliases();
         expect(getSavedAliases()).toEqual([]);
     });
 });
