@@ -106,6 +106,28 @@ describe('Categorizer Logic', () => {
         expect(categorizeExpense('Bug Multistore')).toBe('Electronics');
     });
 
+    it('should categorize PayPal Next Retail as Clothes', () => {
+        expect(categorizeExpense('PAYPAL *NEXT RETAIL    0441162847948 GB')).toBe('Clothes');
+        expect(categorizeExpense('PAYPAL *NEXT RETAIL    35314369001   GB')).toBe('Clothes');
+    });
+
+    it('should categorize Israel Railways as Transport', () => {
+        expect(categorizeExpense('רכבת ישראל-באר יעקב')).toBe('Transport');
+        expect(categorizeExpense('רכבת ישראל-ת"א השלום')).toBe('Transport');
+    });
+
+    it('should categorize Golan Telecom via PayPal as Utilities', () => {
+        expect(categorizeExpense('PAYPAL *GOLANTELECO    4029357733    IL')).toBe('Utilities');
+    });
+
+    it('should categorize CLAUDE.AI SUBSCRIPTION as AI tools', () => {
+        expect(categorizeExpense('CLAUDE.AI SUBSCRIPTION')).toBe('AI tools');
+    });
+
+    it('should categorize iHerb as Shopping', () => {
+        expect(categorizeExpense('IHERB IHERB.COM')).toBe('Shopping');
+    });
+
     it('should handle word-boundary short keywords correctly', () => {
         // "be" as standalone word should match Pharm
         expect(categorizeExpense('Be Pharmacy')).toBe('Pharm');
