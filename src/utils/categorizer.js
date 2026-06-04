@@ -4,7 +4,7 @@ import { transliterate } from 'transliteration';
 export const CATEGORIES = [
     "Food", "Misc", "Games", "Taxes", "AI tools", "Services", "Transport", "Utilities",
     "Shopping", "Electronics", "Tea", "Pharm", "Supermarket",
-    "Investments", "Travel", "Insurance", "Home"
+    "Investments", "Travel", "Insurance", "Home", "Clothes"
 ];
 
 // Deduplicated keywords - each keyword belongs to exactly one category
@@ -12,11 +12,11 @@ const KEYWORDS = {
     "Food": ["wolt", "10bis", "mcdonalds", "mqdvnlds", "aroma", "rvmh", "cafe", "coffee", "restaurant", "pizza", "burger", "sushi", "falafel", "shawarma", "mph", "mkvnvt vtvmtyvt", "rvldyn", "qpyt", "gvrmh", "bvlnzry 96", "qph", "ypn 73", "bvqdv"],
     "Supermarket": ["shufersal", "shvprsl", "mega", "rami levy", "rmy lvy", "victory", "tiv taam", "super", "market", "makolet", "am:pm", "pvlytsr"],
     "Pharm": ["super-pharm", "svpr prm", "be", "pharmacy", "drugstore"],
-    "Transport": ["gett", "uber", "yango", "moovit", "pango", "cello", "fuel", "gas", "dor alon", "paz", "sonol", "delek", "train", "bus", "rail", "parking", "rb qv"],
-    "Utilities": ["electric", "water", "arnona", "municipality", "iriyat", "`yryyt", "internet", "partner", "cellcom", "slqvm", "pelephone", "hot", "bezeq", "v`d hbyt", "khbrt hkhshml", "gas bill", "gas company"],
+    "Transport": ["gett", "uber", "yango", "moovit", "pango", "cello", "fuel", "gas", "dor alon", "paz", "sonol", "delek", "train", "bus", "rail", "parking", "rb qv", "rkbt yshrl"],
+    "Utilities": ["electric", "water", "arnona", "municipality", "iriyat", "`yryyt", "internet", "partner", "cellcom", "slqvm", "pelephone", "hot", "bezeq", "v`d hbyt", "khbrt hkhshml", "gas bill", "gas company", "golanteleco"],
     "Taxes": ["tax", "income tax", "vat", "bituach leumi", "mas hachnasa"],
-    "AI tools": ["openai", "chatgpt", "anthropic", "claude", "midjourney", "github", "copilot", "gemini"],
-    "Shopping": ["amazon", "ebay", "aliexpress", "zara", "h&m", "asos", "shein", "terminal x", "fox", "castro", "renuar", "clothing", "shoes", "mall"],
+    "AI tools": ["openai", "chatgpt", "anthropic", "claude.ai subscription", "claude", "midjourney", "github", "copilot", "gemini"],
+    "Shopping": ["amazon", "ebay", "aliexpress", "zara", "h&m", "asos", "shein", "terminal x", "fox", "castro", "renuar", "clothing", "shoes", "mall", "iherb"],
     "Electronics": ["apple", "samsung", "xiaomi", "sony", "lg", "best buy", "ivory", "ksp", "bug", "computer", "phone", "electronics"],
     "Travel": ["hotel", "airbnb", "booking", "flight", "airline", "el al", "arkia", "israir", "lufthansa", "united", "delta", "easyjet", "ryanair", "wizz", "agoda", "expedia", "trip"],
     "Insurance": ["insurance", "harel", "migdal", "menora", "clal", "phoenix", "idi", "aig", "bytvkh"],
@@ -24,7 +24,8 @@ const KEYWORDS = {
     "Home": ["ikea", "ace", "home center", "fox home", "golf & co", "zara home", "furniture", "diy"],
     "Tea": ["tea", "adanim", "wissotzky", "ceremony", "palais des thes"],
     "Services": ["google", "spotify", "netflix", "disney", "youtube", "zoom", "adobe", "microsoft", "office", "service", "subscription", "maintanance", "cleaning", "laundry", "apple.com/bill", "apple services"],
-    "Games": ["steam", "steamgames", "nintendo", "playstation", "xbox"]
+    "Games": ["steam", "steamgames", "nintendo", "playstation", "xbox"],
+    "Clothes": ["next retail"]
 };
 
 // Threshold for "short" keywords that need word-boundary protection
