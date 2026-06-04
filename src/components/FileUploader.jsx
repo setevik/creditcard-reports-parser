@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Upload, X, FileSpreadsheet } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getSavedAliases } from '../utils/cardAliases';
 
 const ACCEPTED_EXTENSIONS = ['.xls', '.xlsx', '.csv'];
 
@@ -14,8 +15,15 @@ function filterAndWrapFiles(fileList) {
         }));
 }
 
+const ALIAS_DATALIST_ID = 'savedCardAliases';
+
 export function FileUploader({ files, setFiles, onProcess }) {
     const { t } = useLanguage();
+    const [savedAliases, setSavedAliases] = useState([]);
+
+    useEffect(() => {
+        setSavedAliases(getSavedAliases());
+    }, []);
 
     const handleDrop = useCallback((e) => {
         e.preventDefault();
@@ -38,6 +46,13 @@ export function FileUploader({ files, setFiles, onProcess }) {
 
     return (
         <div className="space-y-6">
+            {savedAliases.length > 0 && (
+                <datalist id={ALIAS_DATALIST_ID}>
+                    {savedAliases.map((alias) => (
+                        <option key={alias} value={alias} />
+                    ))}
+                </datalist>
+            )}
             <div
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
@@ -78,6 +93,7 @@ export function FileUploader({ files, setFiles, onProcess }) {
                                 </div>
                                 <input
                                     type="text"
+                                    list={savedAliases.length > 0 ? ALIAS_DATALIST_ID : undefined}
                                     placeholder={t('cardAliasPlaceholder')}
                                     value={fileObj.alias}
                                     onChange={(e) => updateAlias(fileObj.id, e.target.value)}
