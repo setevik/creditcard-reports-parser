@@ -6,6 +6,7 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { LanguagePicker } from './components/LanguagePicker';
 import { parseExcelFile } from './utils/parser';
 import { aggregateTransactions } from './utils/aggregator';
+import { saveAliases } from './utils/cardAliases';
 import { ExportGuide } from './components/ExportGuide';
 import { Wallet, MessageSquare, HelpCircle } from 'lucide-react';
 import { Analytics } from "@vercel/analytics/react";
@@ -41,6 +42,9 @@ function AppContent() {
             }
 
             const aggregatedList = aggregateTransactions(allExpenses);
+
+            // Remember user-entered aliases for autocomplete on future uploads.
+            saveAliases(files.map((f) => f.alias));
 
             setProcessedData(aggregatedList);
         } catch (err) {
