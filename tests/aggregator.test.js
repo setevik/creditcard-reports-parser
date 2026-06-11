@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { aggregateTransactions } from '../src/utils/aggregator';
+import { aggregateTransactions, normalizeVendor } from '../src/utils/aggregator';
 
 describe('Aggregator Logic', () => {
     it('should aggregate transactions for the same vendor, card, and billing date', () => {
@@ -100,5 +100,30 @@ describe('Aggregator Logic', () => {
 
         expect(aggregated[2].cardAlias).toBe('Visa');
         expect(aggregated[2].vendor).toBe('ZARA');
+    });
+
+    it('should group a Hebrew vendor despite whitespace and invisible-mark differences', () => {
+        // Same merchant ("מאפה נאמן באר יעקב") as it commonly appears across rows of a
+        // credit-card export: clean, with a doubled internal space + trailing space, and
+        // wrapped in RTL/LTR directional marks.
+        const transactions = [
+            { vendor: 'מאפה נאמן באר יעקב', amount: 10, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' },
+            { vendor: 'מאפה נאמן  באר יעקב ', amount: 20, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' },
+            { vendor: '‏מאפה נאמן באר יעקב‎', amount: 30, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' }
+        ];
+
+        const aggregated = aggregateTransactions(transactions);
+
+        expect(aggregated.length).toBe(1);
+        expect(aggregated[0].amount).toBe(60);
+        expect(aggregated[0].vendor).toBe('מאפה נאמן באר יעקב');
+        expect(aggregated[0].transactions.length).toBe(3);
+    });
+
+    it('normalizeVendor strips invisible marks and collapses whitespace', () => {
+        expect(normalizeVendor('  ZARA   STORE ')).toBe('ZARA STORE');
+        expect(normalizeVendor('‏מאפה נאמן‎')).toBe('מאפה נאמן');
+        expect(normalizeVendor(undefined)).toBe('');
+        expect(normalizeVendor(null)).toBe('');
     });
 });
