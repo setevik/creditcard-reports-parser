@@ -109,7 +109,7 @@ describe('Aggregator Logic', () => {
         const transactions = [
             { vendor: 'מאפה נאמן באר יעקב', amount: 10, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' },
             { vendor: 'מאפה נאמן  באר יעקב ', amount: 20, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' },
-            { vendor: '‏מאפה נאמן באר יעקב‎', amount: 30, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' }
+            { vendor: '\u200Fמאפה נאמן באר יעקב\u200E', amount: 30, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' }
         ];
 
         const aggregated = aggregateTransactions(transactions);
@@ -122,7 +122,7 @@ describe('Aggregator Logic', () => {
 
     it('normalizeVendor strips invisible marks and collapses whitespace', () => {
         expect(normalizeVendor('  ZARA   STORE ')).toBe('ZARA STORE');
-        expect(normalizeVendor('‏מאפה נאמן‎')).toBe('מאפה נאמן');
+        expect(normalizeVendor('\u200Fמאפה נאמן\u200E')).toBe('מאפה נאמן');
         expect(normalizeVendor(undefined)).toBe('');
         expect(normalizeVendor(null)).toBe('');
     });
