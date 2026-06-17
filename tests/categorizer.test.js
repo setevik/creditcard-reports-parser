@@ -128,6 +128,23 @@ describe('Categorizer Logic', () => {
         expect(categorizeExpense('IHERB IHERB.COM')).toBe('Shopping');
     });
 
+    it('should categorize new Hebrew vendor patterns', () => {
+        // "מ.תחבורה - רב-פס" -> "m.tkhbvrh - rb-ps" -> Transport
+        expect(categorizeExpense('מ.תחבורה - רב-פס')).toBe('Transport');
+        // "מש - קר בע"מ" -> "msh - qr b`"m" -> Food
+        expect(categorizeExpense('מש - קר בע"מ')).toBe('Food');
+        // "סקצ'רס פוטור" -> "sqts'rs pvtvr" (Skechers) -> Clothes
+        expect(categorizeExpense("סקצ'רס פוטור")).toBe('Clothes');
+        // "נוי השדה הדס חקלאות" -> "nvy hshdh hds khqlvt" -> Food
+        expect(categorizeExpense('נוי השדה הדס חקלאות')).toBe('Food');
+        // "סופר הסטוק באר יעקוב" -> "svpr hstvq br y`qvb" -> Shopping
+        expect(categorizeExpense('סופר הסטוק באר יעקוב')).toBe('Shopping');
+        // "פלנטי-PLANTY" -> "plnty-planty" -> Food
+        expect(categorizeExpense('פלנטי-PLANTY')).toBe('Food');
+        // "תמרה יוגורט" -> "tmrh yvgvrt" -> Food
+        expect(categorizeExpense('תמרה יוגורט')).toBe('Food');
+    });
+
     it('should handle word-boundary short keywords correctly', () => {
         // "be" as standalone word should match Pharm
         expect(categorizeExpense('Be Pharmacy')).toBe('Pharm');
