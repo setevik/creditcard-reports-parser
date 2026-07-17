@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { aggregateTransactions, normalizeVendor } from '../src/utils/aggregator';
+import { aggregateTransactions, normalizeVendor, canonicalizeVendor } from '../src/utils/aggregator';
 
 describe('Aggregator Logic', () => {
     it('should aggregate transactions for the same vendor, card, and billing date', () => {
@@ -118,6 +118,39 @@ describe('Aggregator Logic', () => {
         expect(aggregated[0].amount).toBe(60);
         expect(aggregated[0].vendor).toBe('מאפה נאמן באר יעקב');
         expect(aggregated[0].transactions.length).toBe(3);
+    });
+
+    it('should group coffee-chain branches under one canonical vendor', () => {
+        const transactions = [
+            { vendor: 'ארומה אפליקציה', amount: 15, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' },
+            { vendor: 'ארומה באר יעקב', amount: 25, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' },
+            { vendor: 'ארומה בית התפוצות', amount: 35, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' },
+            { vendor: 'אילנס רכבת -ת"א האונ', amount: 12, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' },
+            { vendor: 'אילנס רכבת-ת"א השלום', amount: 18, currency: '₪', billingDate: '10.11.2025', cardAlias: 'Cal', category: 'Food' }
+        ];
+
+        const aggregated = aggregateTransactions(transactions);
+
+        // Two chains -> two groups
+        expect(aggregated.length).toBe(2);
+
+        const aroma = aggregated.find(a => a.vendor === 'ארומה');
+        expect(aroma).toBeTruthy();
+        expect(aroma.amount).toBe(75);
+        expect(aroma.transactions.length).toBe(3);
+
+        const ilans = aggregated.find(a => a.vendor === 'אילנס');
+        expect(ilans).toBeTruthy();
+        expect(ilans.amount).toBe(30);
+        expect(ilans.transactions.length).toBe(2);
+    });
+
+    it('canonicalizeVendor collapses known chains and leaves others intact', () => {
+        expect(canonicalizeVendor('ארומה באר יעקב')).toBe('ארומה');
+        expect(canonicalizeVendor('אילנס רכבת-ת"א השלום')).toBe('אילנס');
+        expect(canonicalizeVendor('AROMA Espresso Bar')).toBe('ארומה');
+        // Unknown vendors are returned normalized, unchanged.
+        expect(canonicalizeVendor('  ZARA   STORE ')).toBe('ZARA STORE');
     });
 
     it('normalizeVendor strips invisible marks and collapses whitespace', () => {
