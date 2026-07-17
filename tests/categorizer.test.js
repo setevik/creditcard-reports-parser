@@ -147,6 +147,8 @@ describe('Categorizer Logic', () => {
         expect(categorizeExpense('פרו מיל פוד בע"מ')).toBe('Food');
         // "אילנס רכבת -ת"א האונ" -> "ylns ..." -> Food (Ilan's coffee chain)
         expect(categorizeExpense('אילנס רכבת -ת"א האונ')).toBe('Food');
+        // "טל עולם הגלידה בע"מ" -> "tl `vlm hglydh ..." -> Food (גלידה = ice cream)
+        expect(categorizeExpense('טל עולם הגלידה בע"מ')).toBe('Food');
     });
 
     it('should handle word-boundary short keywords correctly', () => {
