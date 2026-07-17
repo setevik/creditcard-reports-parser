@@ -9,7 +9,7 @@ export const CATEGORIES = [
 
 // Deduplicated keywords - each keyword belongs to exactly one category
 const KEYWORDS = {
-    "Food": ["wolt", "10bis", "mcdonalds", "mqdvnlds", "aroma", "rvmh", "cafe", "coffee", "restaurant", "pizza", "burger", "sushi", "falafel", "shawarma", "mph", "mkvnvt vtvmtyvt", "rvldyn", "qpyt", "gvrmh", "bvlnzry 96", "qph", "ypn 73", "bvqdv", "msh - qr", "nvy hshdh", "planty", "yvgvrt", "yogurt", "pvd"],
+    "Food": ["wolt", "10bis", "mcdonalds", "mqdvnlds", "aroma", "rvmh", "cafe", "coffee", "restaurant", "pizza", "burger", "sushi", "falafel", "shawarma", "mph", "mkvnvt vtvmtyvt", "rvldyn", "qpyt", "gvrmh", "bvlnzry 96", "qph", "ypn 73", "bvqdv", "msh - qr", "nvy hshdh", "planty", "yvgvrt", "yogurt", "pvd", "ylns"],
     "Supermarket": ["shufersal", "shvprsl", "mega", "rami levy", "rmy lvy", "victory", "tiv taam", "super", "market", "makolet", "am:pm", "pvlytsr"],
     "Pharm": ["super-pharm", "svpr prm", "be", "pharmacy", "drugstore"],
     "Transport": ["gett", "uber", "yango", "moovit", "pango", "cello", "fuel", "gas", "dor alon", "paz", "sonol", "delek", "train", "bus", "rail", "parking", "rb qv", "rkbt yshrl", "tkhbvrh"],

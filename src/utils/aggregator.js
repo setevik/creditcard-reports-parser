@@ -16,13 +16,39 @@ export function normalizeVendor(vendor) {
         .trim();
 }
 
+// Chains whose individual branches (train stations, malls, in-app purchases,
+// etc.) should collapse into a single group instead of one row per location.
+// Each entry maps a canonical display name to the markers that identify the
+// chain anywhere in the vendor string. Markers are matched case-insensitively
+// against the normalized vendor, so both the Hebrew name and any Latin
+// spelling can be listed. Add new chains here to group them.
+const CHAINS = [
+    { canonical: 'ארומה', markers: ['ארומה', 'aroma'] },
+    { canonical: 'אילנס', markers: ['אילנס', 'ilan'] },
+];
+
+// Collapse a vendor to its chain's canonical name when it belongs to a known
+// chain; otherwise return the plain normalized vendor unchanged.
+export function canonicalizeVendor(vendor) {
+    const normalized = normalizeVendor(vendor);
+    const lower = normalized.toLowerCase();
+    for (const chain of CHAINS) {
+        for (const marker of chain.markers) {
+            if (lower.includes(marker.toLowerCase())) {
+                return chain.canonical;
+            }
+        }
+    }
+    return normalized;
+}
+
 export function aggregateTransactions(transactions) {
     if (!Array.isArray(transactions) || transactions.length === 0) return [];
 
     const aggregated = transactions.reduce((acc, curr) => {
         // Group by Vendor, Currency, Card, and Billing Date
         // We exclude Category from the key so that different categories for the same vendor are merged
-        const normalizedVendor = normalizeVendor(curr.vendor);
+        const normalizedVendor = canonicalizeVendor(curr.vendor);
         const key = `${normalizedVendor.toLowerCase()}|${curr.currency}|${curr.cardAlias}|${curr.billingDate}`;
         if (!acc[key]) {
             acc[key] = {
