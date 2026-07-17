@@ -143,6 +143,8 @@ describe('Categorizer Logic', () => {
         expect(categorizeExpense('פלנטי-PLANTY')).toBe('Food');
         // "תמרה יוגורט" -> "tmrh yvgvrt" -> Food
         expect(categorizeExpense('תמרה יוגורט')).toBe('Food');
+        // "פרו מיל פוד בע"מ" -> "prv myl pvd b`"m" -> Food (פוד = "pvd")
+        expect(categorizeExpense('פרו מיל פוד בע"מ')).toBe('Food');
     });
 
     it('should handle word-boundary short keywords correctly', () => {
