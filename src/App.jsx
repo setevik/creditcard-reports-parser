@@ -9,8 +9,6 @@ import { aggregateTransactions } from './utils/aggregator';
 import { saveAliases } from './utils/cardAliases';
 import { ExportGuide } from './components/ExportGuide';
 import { Wallet, MessageSquare, HelpCircle } from 'lucide-react';
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function AppContent() {
     const [files, setFiles] = useState([]);
@@ -145,8 +143,6 @@ function App() {
     return (
         <LanguageProvider>
             <AppContent />
-            <Analytics />
-            <SpeedInsights />
         </LanguageProvider>
     );
 }

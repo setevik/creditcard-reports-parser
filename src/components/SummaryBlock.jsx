@@ -9,7 +9,6 @@ export function SummaryBlock({ data }) {
 
     const totalTransactions = data.length;
     const uniqueVendors = new Set(data.map(d => d.vendor)).size;
-    const totalSum = data.reduce((sum, d) => sum + d.amount, 0);
 
     // Group by currency for display
     const sumsByCurrency = data.reduce((acc, d) => {

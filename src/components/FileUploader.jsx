@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Upload, X, FileSpreadsheet, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getSavedAliases, clearAliases } from '../utils/cardAliases';
@@ -19,11 +19,7 @@ const ALIAS_DATALIST_ID = 'savedCardAliases';
 
 export function FileUploader({ files, setFiles, onProcess }) {
     const { t } = useLanguage();
-    const [savedAliases, setSavedAliases] = useState([]);
-
-    useEffect(() => {
-        setSavedAliases(getSavedAliases());
-    }, []);
+    const [savedAliases, setSavedAliases] = useState(getSavedAliases);
 
     const handleDrop = useCallback((e) => {
         e.preventDefault();
