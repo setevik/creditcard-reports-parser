@@ -5,7 +5,7 @@
   "type": "module",
   "private": true,
   "license": "MIT",
-  "author": "Daniel B",
+  "author": "",
   "homepage": "https://creditcard-reports-parser.vercel.app/",
   "keywords": [
     "credit-card",
