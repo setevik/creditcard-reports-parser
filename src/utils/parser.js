@@ -20,7 +20,6 @@ export async function parseExcelFile(file, cardAlias) {
 
                     // Identify format and header row
                     let headerRowIndex = -1;
-                    let format = 'unknown';
                     let billingDate = '';
 
                     for (let i = 0; i < Math.min(jsonData.length, 20); i++) {
@@ -48,12 +47,10 @@ export async function parseExcelFile(file, cardAlias) {
                         }
 
                         if (rowStr.includes('תאריך') && (rowStr.includes('עסקה') || rowStr.includes('רכישה') || rowStr.includes('חיוב'))) {
+                            // Column mapping below handles both the Max/Leumi layout
+                            // (which carries a מטבע חיוב column) and the
+                            // Isracard/Amex/Visa one, so the header row is all we need.
                             headerRowIndex = i;
-                            if (row.includes('מטבע חיוב')) {
-                                format = 'max'; // Max/Leumi style
-                            } else {
-                                format = 'standard'; // Isracard/Amex/Visa style
-                            }
                             break;
                         }
                     }
