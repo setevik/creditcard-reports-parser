@@ -47,9 +47,6 @@ export async function parseExcelFile(file, cardAlias) {
                         }
 
                         if (rowStr.includes('תאריך') && (rowStr.includes('עסקה') || rowStr.includes('רכישה') || rowStr.includes('חיוב'))) {
-                            // Column mapping below handles both the Max/Leumi layout
-                            // (which carries a מטבע חיוב column) and the
-                            // Isracard/Amex/Visa one, so the header row is all we need.
                             headerRowIndex = i;
                             break;
                         }
