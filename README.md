@@ -4,6 +4,8 @@ A browser-based tool that turns an Israeli credit card statement export into a
 categorized expense summary. Upload the Excel or CSV file your provider gives
 you and get spending grouped by vendor, category and billing period.
 
+Very naive and simple implementation, but it's helpful for monthly budget stats.
+
 Supports **Isracard**, **Cal** (כאל) and **Max** (מקס). The UI is available in
 English, Hebrew, Russian and French.
 
